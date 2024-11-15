@@ -2,7 +2,10 @@ Package: rstarsim
 Title: An R Interface to Starsim
 Version: 0.1.0
 Authors@R: 
-    person("Cliff", "Kerr", , "cliff@starsim.org", role = c("aut", "cre"), comment = "test")
+    person("Cliff", "Kerr", , "cliff@starsim.org", role = c("aut", "cre"))
+    person("Robyn", "Stuart", , "robyn@starsim.org", role = c("aut", "cre"))
+    person("Romesh", "Abeysuriya", , "romesh.abeysuriya@burnet.edu.au", role = c("aut", "cre"))
+    person("Daniel", "Klein", , "daniel.klein@gatesfoundation.org", role = c("aut", "cre"))
 Description: Starsim is an open-source agent-based modeling framework for simulating the spread of diseases among agents via dynamic transmission networks.
 License: LICENSE
 Encoding: UTF-8
