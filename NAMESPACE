@@ -2,3 +2,4 @@
 
 export(install_starsim)
 export(load_starsim)
+export(load_starsim_env)
