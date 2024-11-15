@@ -1,12 +1,18 @@
 Package: rstarsim
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: An R Interface to Starsim
+Version: 0.1.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Cliff", "Kerr", , "cliff@starsim.org", role = c("aut", "cre"), comment = "test")
+Description: Starsim is an open-source agent-based modeling framework for simulating the spread of diseases among agents via dynamic transmission networks.
+License: LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+Config/reticulate:
+  list(
+    packages = list(
+      list(package = "starsim")
+    )
+  )
+Imports: 
+    reticulate
