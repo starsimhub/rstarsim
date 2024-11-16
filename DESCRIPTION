@@ -8,7 +8,7 @@ Authors@R: c(
     person("Daniel", "Klein", , "daniel.klein@gatesfoundation.org", role = c("aut", "cre"))
     )
 Description: Starsim is an open-source agent-based modeling framework for simulating the spread of diseases among agents via dynamic transmission networks.
-License: LICENSE
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
