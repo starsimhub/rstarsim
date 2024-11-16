@@ -1,6 +1,6 @@
 # All publicly visible functions
 
-#' Install Starsim
+#' Install Starsim (and Python if needed)
 #'
 #' @return
 #' @export
@@ -14,24 +14,13 @@ install_starsim <- function(..., envname = "r-starsim") {
   reticulate::use_virtualenv(envname, required = FALSE)
 }
 
-#' Load Starsim alone
-#'
-#' @return
-#' @export
-#'
-#' @examples
-load_starsim <- function() {
-  reticulate::import('starsim')
-}
-
-
 #' Load all components of the Starsim environment
 #'
 #' @return
 #' @export
 #'
 #' @examples
-load_starsim_env <- function() {
+load_starsim <- function() {
 
   # Import OS and set the environment variable (used when importing Starsim)
   os <- reticulate::import('os')
