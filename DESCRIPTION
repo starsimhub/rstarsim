@@ -1,4 +1,4 @@
-Package: rstarsim
+Package: starsim
 Title: An R Interface to Starsim
 Version: 0.1.0
 Authors@R: 
@@ -19,4 +19,4 @@ Config/reticulate:
   )
 Imports: 
     reticulate
-URL: http://starsim.org/rstarsim/
+URL: http://r.starsim.org/
