@@ -10,8 +10,8 @@ install_starsim <- function(..., envname = "r-starsim") {
   reticulate::install_python(version='3.12')
   reticulate::py_install("starsim", envname = envname, ...)
 }
-.onLoad <- function(...) {
-  reticulate::use_virtualenv("r-starsim", required = FALSE)
+.onLoad <- function(..., envname = "r-starsim") {
+  reticulate::use_virtualenv(envname, required = FALSE)
 }
 
 #' Load Starsim alone
@@ -33,19 +33,24 @@ load_starsim <- function() {
 #' @examples
 load_starsim_env <- function() {
 
-  # Imports
-  ss <- reticulate::import('starsim')
+  # Import OS and set the environment variable (used when importing Starsim)
+  os <- reticulate::import('os')
+  os$environ['STARSIM_RETICULATE'] = '1'
+
+  # Finish imports
   sc <- reticulate::import('sciris')
   np <- reticulate::import('numpy')
   pd <- reticulate::import('pandas')
   plt <- reticulate::import('matplotlib.pyplot')
+  ss <- reticulate::import('starsim')
 
   # Assign imports
-  assign("ss", ss, envir = .GlobalEnv)
+  assign("os", os, envir = .GlobalEnv)
   assign("sc", sc, envir = .GlobalEnv)
   assign("np", np, envir = .GlobalEnv)
   assign("pd", pd, envir = .GlobalEnv)
   assign("plt", plt, envir = .GlobalEnv)
+  assign("ss", ss, envir = .GlobalEnv)
 
   # Shortcuts to important classes
   Sim <- ss$Sim
