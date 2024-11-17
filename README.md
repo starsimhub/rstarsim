@@ -1,11 +1,11 @@
 # R-Starsim
 
-R-Starsim is a package to facilitate the usage of [Starsim](https://starsim.org) from R. It is primarily a wrapper for [reticulate](https://rstudio.github.io/reticulate/index.html), which facilitates communication between Python and R.
+R-Starsim is a package to facilitate the usage of [Starsim](https://starsim.org) from R. It uses [reticulate](https://rstudio.github.io/reticulate/index.html) to communicate between Python and R.
 
 
 ## Installation
 
-Although R-Starsim will be released on CRAN in future, for the time being, it can be installed via GitHub:
+Although R-Starsim will be released on CRAN in future, for now it can be installed via GitHub:
 
 ```R
 # install.packages("devtools")
@@ -63,9 +63,10 @@ sim$diseases$sir$plot()
 
 ### Installation
 
-If `init_starsim()` fails, try creating your own Python environment (via `conda` or `miniconda`), installing Starsim manually, and then calling `load_starsim()` with an argument. For example, if your custom environment is called `r-starsim`, you would use:
+If `init_starsim()` fails, try creating your own Python environment (via `conda` or `miniconda`), installing Starsim manually, and then calling `load_starsim()` with an argument. For example, if your custom `conda` environment is called `r-starsim`, you would use:
 ```R
-load_starsm("r-starsim")
+library(starsim)
+load_starsim("r-starsim")
 ```
 
 ### Plotting
