@@ -77,11 +77,14 @@ SEIR <- PyClass("SEIR",
       library(ggplot2)
       df <- self$results$to_df()
 
-      ggplot(df, aes(timevec)) + 
+      fig <- ggplot(df, aes(timevec)) + 
         geom_line(aes(y = n_susceptible, colour = "Susceptible")) + 
         geom_line(aes(y = n_exposed, colour = "Exposed")) +
         geom_line(aes(y = n_infected, colour = "Infected")) +
         geom_line(aes(y = n_recovered, colour = "Recovered"))
+      
+      print(fig)
+      return(fig)
     }
   )
 )
@@ -95,5 +98,4 @@ print(ss$`__version__`)
 seir <- SEIR()
 sim <- ss$Sim(diseases=seir, networks='random')
 sim$run()
-fig <- sim$diseases$seir$plot()
-print(fig)
+sim$diseases$seir$plot()

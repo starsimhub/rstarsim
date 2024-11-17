@@ -104,6 +104,7 @@ load_starsim <- function(envname = "r-reticulate", required = FALSE) {
   assign("Analyzer", Analyzer, envir = .GlobalEnv)
 
   # Shortcuts to reticulate functions
-  assign("PyClass", reticulate::PyClass, envir = .GlobalEnv)
   assign("import", reticulate::import, envir = .GlobalEnv)
+  assign("py_none", reticulate::py_none, envir = .GlobalEnv)
+  assign("PyClass", reticulate::PyClass, envir = .GlobalEnv)
 }
