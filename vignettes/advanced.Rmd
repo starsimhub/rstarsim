@@ -12,11 +12,18 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+## Advanced usage example
+
 This example illustrates how to creating a custom disease module. It is a translation of Starsim's [Diseases developer tutorial](https://docs.starsim.org/tutorials/dev_tut_diseases.html) to R.
 
-```{r, eval = FALSE}
-# Pull out the commands for generating the plots
+To recap that tutorial, the main customizations we are performing here are:
+1. In `__init__()` we added the extra pars and states needed for our model.
+2. We defined infectious to include both infected and exposed people - this means that we can just reuse the existing logic for how the SIR model handles transmission.
+3. We updated `step_state()` and `step_die()` to include changes to the exposed state.
+4. We rewrote `set_prognoses()` to include the new exposed state.
 
+```{r, eval = FALSE}
 library(starsim)
 load_starsim()
 
@@ -108,3 +115,8 @@ sim$run() # Run
 sim$diseases$seir$plot() # Call the custom ggplot function
 ```
 <img src="advanced-seir.png" alt="Custom SEIR module" />
+
+
+### Next steps
+
+For more intermediate examples between the simple example (which is very simple) and this one (which is very advanced), please see the [Starsim documentation](https://docs.starsim.org). If you still have questions, please [reach out to us](mailto:info@starsim.org) -- we're very happy to help!
