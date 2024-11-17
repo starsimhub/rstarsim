@@ -30,7 +30,7 @@ init_starsim <- function(..., envname = "r-reticulate", required = FALSE) {
 #' @return null
 #' @export
 #' @examples
-#' reinstall_starsim('my-starsim-env')
+#' reinstall_starsim(envname = "my-starsim-env")
 reinstall_starsim <- function(..., envname = "r-reticulate") {
   reticulate::py_install(
     "starsim",
