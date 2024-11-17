@@ -1,0 +1,38 @@
+---
+title: "Installation"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Installing Starsim
+
+Installing Starsim should be straightforward, whether or not you have Python or `reticulate` already configured on your computer.
+
+First, install `devtools` if you haven't already:
+```{r}
+install.packages("devtools")
+```
+
+Second, install the R-Starsim package. This installs the _wrapper_ for Starsim, but not Starsim itself yet.
+```{r}
+devtools::install_github("starsimhub/rstarsim")
+```
+
+Third, load the wrapper:
+```{r}
+library(starsim)
+```
+
+Finally, we install Starsim itself. This step will also install Python (specifically Miniconda) if it's already available, and will create a virtual environment (`r-reticulate`) if that's not available either.
+```{r}
+init_starsim()
+```
