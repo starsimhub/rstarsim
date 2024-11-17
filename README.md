@@ -54,8 +54,10 @@ pars <- list(
 # Create, run, and plot the simulation
 sim <- ss$Sim(pars)
 sim$run()
-sim$plot()
+sim$diseases$sir$plot()
 ```
+![image SIR dynamics plot](example-r.png)
+
 
 ## Troubleshooting
 
