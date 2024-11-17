@@ -37,6 +37,11 @@ library(starsim)
 init_starsim()
 ```
 
+Test reinstall:
+```{r}
+reinstall_starsim() # TEMP
+```
+
 5. You can test the install with `ss$demo()`, which should run a sim and plot the results.
 ```{r}
 load_starsim()
