@@ -43,7 +43,7 @@ SEIR <- PyClass("SEIR",
     # Ensure that exposed is set to False for people who die
     step_die = function(self, uids) {
       ss$SIR$step_die(self, uids) # Perform SIR updates
-      self$exposed[uids] = False
+      self$exposed[uids] = FALSE
       py_none()
     },
 
@@ -63,12 +63,12 @@ SEIR <- PyClass("SEIR",
       self$ti_infected[uids] <- ti + dur_exp
       dur_inf <- self$pars['dur_inf']$rvs(uids)
       will_die <- self$pars['p_death']$rvs(uids)
-      self$ti_recovered[uids[~will_die]] <- ti + dur_inf[~will_die]
+      self$ti_recovered[uids[!will_die]] <- ti + dur_inf[!will_die]
       self$ti_dead[uids[will_die]] <- ti + dur_inf[will_die]
 
       # Update result count of new infections
       new_inf <- self$results['new_infections']
-      new_inf[self$ti] = new_inf[self$ti] + len(uids)
+      new_inf[self$ti] = new_inf[self$ti] + length(uids)
       py_none()
     },
 
@@ -95,4 +95,5 @@ print(ss$`__version__`)
 seir <- SEIR()
 sim <- ss$Sim(diseases=seir, networks='random')
 sim$run()
-sim$diseases$seir$plot()
+fig <- sim$diseases$seir$plot()
+print(fig)
