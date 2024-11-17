@@ -12,9 +12,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-
-## Advanced usage example
-
 This example illustrates how to creating a custom disease module. It is a translation of Starsim's [Diseases developer tutorial](https://docs.starsim.org/tutorials/dev_tut_diseases.html) to R.
 
 ```{r, eval = FALSE}
@@ -34,7 +31,7 @@ SEIR <- PyClass("SEIR",
 
       # Parameters specific to SEIR: duration of exposure
       self$define_pars(
-          dur_exp = ss$lognorm_ex(0.5),
+          dur_exp = ss$lognorm_ex(0.5), # Define an explicit ("ex") lognormal distribution with a mean of 0.5
       )
       self$update_pars(pars, ...)
 
@@ -51,7 +48,7 @@ SEIR <- PyClass("SEIR",
         ss$SIR$step_state(self) # Perform SIR updates
 
         # Additional updates: progress exposed -> infected
-        infected <- self$exposed & (self$ti_infected <= self$ti)
+        infected <- self$exposed & (self$ti_infected <= self$ti) # Check who is scheduled to become infected
         self$exposed[infected] = FALSE
         self$infected[infected] = TRUE
         return(py_none())
@@ -69,29 +66,28 @@ SEIR <- PyClass("SEIR",
       ss$SIR$set_prognoses(self, uids, sources) # Perform SIR updates
       
       # Define handling of exposure
-      ti <- self$ti
-      self$susceptible[uids] = FALSE
-      self$exposed[uids] = TRUE
-      self$ti_exposed[uids] = ti
+      ti <- self$ti # Current module time index
+      self$susceptible[uids] = FALSE # People exposed are no longer susceptible
+      self$exposed[uids] = TRUE # But they are exposed
+      self$ti_exposed[uids] = ti # Track what time they got infected
 
       # Calculate and schedule future outcomes
-      dur_exp <- self$pars['dur_exp']$rvs(uids)
-      self$ti_infected[uids] <- ti + dur_exp
-      dur_inf <- self$pars['dur_inf']$rvs(uids)
-      will_die <- self$pars['p_death']$rvs(uids)
-      self$ti_recovered[uids[!will_die]] <- ti + dur_inf[!will_die]
-      self$ti_dead[uids[will_die]] <- ti + dur_inf[will_die]
+      dur_exp <- self$pars['dur_exp']$rvs(uids) # Get random numbers for the duration of exposure
+      self$ti_infected[uids] <- ti + dur_exp # Set the time at which people move from exposed to infected
+      dur_inf <- self$pars['dur_inf']$rvs(uids) # Set the duration of infection
+      will_die <- self$pars['p_death']$rvs(uids) # Choose who will die
+      self$ti_recovered[uids[!will_die]] <- ti + dur_inf[!will_die] # Schedule people to recover
+      self$ti_dead[uids[will_die]] <- ti + dur_inf[will_die] # Schedule people to die
 
       # Update result count of new infections
-      new_inf <- self$results['new_infections']
-      new_inf[self$ti] = new_inf[self$ti] + length(uids)
+      self$results['new_infections'][self$ti] = length(uids) # Store the number of new infections in the results
       return(py_none())
     },
 
     # Plot results using ggplot
     plot = function(self) {
       library(ggplot2)
-      df <- self$results$to_df()
+      df <- self$results$to_df() # Export results to an R data.frame
 
       fig <- ggplot(df, aes(timevec)) + 
         geom_line(aes(y = n_susceptible, colour = "Susceptible")) + 
@@ -106,9 +102,9 @@ SEIR <- PyClass("SEIR",
 )
 
 # Run and plot
-seir <- SEIR()
-sim <- ss$Sim(diseases=seir, networks='random')
-sim$run()
-sim$diseases$seir$plot()
+seir <- SEIR() # Create the disease module
+sim <- ss$Sim(diseases=seir, networks='random') # Create a simple sim with default parameters
+sim$run() # Run
+sim$diseases$seir$plot() # Call the custom ggplot function
 ```
 <img src="advanced-seir.png" alt="Custom SEIR module" />

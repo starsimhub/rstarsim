@@ -6,9 +6,6 @@
 \usage{
 load_starsim(envname = "r-reticulate", required = FALSE)
 }
-\value{
-null
-}
 \description{
 Load all components of the Starsim environment, including: \code{ss} (all
 Starsim functionality); NumPy (\code{np}), pandas (\code{pd}), Sciris (\code{sc}), and
@@ -18,9 +15,9 @@ this is the only function that needs to be called from R-Starsim;
 everything else is accessed via \code{ss}.
 }
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 load_starsim()
 sim <- ss$Sim(diseases='sis', networks='random')
 sim$run()
-}
+\dontshow{\}) # examplesIf}
 }

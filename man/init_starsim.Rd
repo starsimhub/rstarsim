@@ -6,15 +6,12 @@
 \usage{
 init_starsim(..., envname = "r-reticulate", required = FALSE)
 }
-\value{
-null
-}
 \description{
 Perform the steps needed to initialize Starsim: install Miniconda, create a virtual
 environment ("r-reticulate"), and install Starsim into it
 }
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 init_starsim()
-}
+\dontshow{\}) # examplesIf}
 }

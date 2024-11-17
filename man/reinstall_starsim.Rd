@@ -6,14 +6,11 @@
 \usage{
 reinstall_starsim(..., envname = "r-reticulate")
 }
-\value{
-null
-}
 \description{
 Reinstalls Starsim into the current environment ("r-reticulate" by default)
 }
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 reinstall_starsim()
-}
+\dontshow{\}) # examplesIf}
 }
