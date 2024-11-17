@@ -114,12 +114,13 @@
 <li>If plots don’t appear, try <code>plt$show()</code> after calling <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>, or set <code>ss$options(reticulate=True)</code> before plotting.</li>
 <li>If the plots don’t appear <em>and</em> they cause RStudio to crash, either set the backend to Agg (Tools &gt; General Options &gt; General &gt; Graphics &gt; Backend), or call <code><a href="https://rdrr.io/r/grDevices/x11.html" class="external-link">X11()</a></code> somewhere in your script before calling <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>.</li>
 <li>If plots appear but the scaling is wrong (e.g. the text is colliding), you can either (a) zoom out in RStudio (this changes the inferred scaling factor), or (b) change the default font size with e.g. <code>sc$options(fontsize=6)</code>.</li>
+<li>If all else fails, plotting seems to work better from VS Code than RStudio.</li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="other-issues">Other issues<a class="anchor" aria-label="anchor" href="#other-issues"></a>
 </h3>
-<p>See <a href="https://vegawidget.github.io/altair/articles/field-guide-python.html" class="external-link">this article</a> with tips on using Python packages from <code>reticulate</code>, or <a href="mailto:info@starsim.org">email us</a> for help.</p>
+<p>Questions? Comments? Bugs? Please <a href="https://github.com/starsimhub/rstarsim/issues/new/choose" class="external-link">open an issue</a> or <a href="mailto:info@starsim.org">email us</a> for help.</p>
 </div>
 </div>
 </div>
