@@ -62,13 +62,13 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"starsimhub/rstarsim"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/" class="external-link">starsim</a></span><span class="op">)</span></span>
-<span><span class="fu">init_starsim</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/init_starsim.html">init_starsim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>If you do not already have a <code>reticulate</code> Python environment set up, R-Starsim will try to make one for you (by downloading Miniconda, creating an <code>r-reticulate</code> environment, and activating it).</p>
 <p>If you want to reinstall Starsim (e.g. to update the version), you can use:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/" class="external-link">starsim</a></span><span class="op">)</span></span>
-<span><span class="fu">reinstall_starsim</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/reinstall_starsim.html">reinstall_starsim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -80,8 +80,8 @@
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load Starsim</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/" class="external-link">starsim</a></span><span class="op">)</span></span>
-<span><span class="fu">load_starsim</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/load_starsim.html">load_starsim</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Set the simulation parameters</span></span>
 <span><span class="va">pars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -111,10 +111,10 @@
 <div class="section level3">
 <h3 id="installation-1">Installation<a class="anchor" aria-label="anchor" href="#installation-1"></a>
 </h3>
-<p>If <code>init_starsim()</code> fails, try creating your own Python environment (via <code>conda</code> or <code>miniconda</code>), installing Starsim manually, and then calling <code>load_starsim()</code> with an argument. For example, if your custom <code>conda</code> environment is called <code>r-starsim</code>, you would use:</p>
+<p>If <code><a href="reference/init_starsim.html">init_starsim()</a></code> fails, try creating your own Python environment (via <code>conda</code> or <code>miniconda</code>), installing Starsim manually, and then calling <code><a href="reference/load_starsim.html">load_starsim()</a></code> with an argument. For example, if your custom <code>conda</code> environment is called <code>r-starsim</code>, you would use:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/" class="external-link">starsim</a></span><span class="op">)</span></span>
-<span><span class="fu">load_starsim</span><span class="op">(</span><span class="st">"r-starsim"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/load_starsim.html">load_starsim</a></span><span class="op">(</span><span class="st">"r-starsim"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a>
