@@ -3,12 +3,11 @@
 #' Initialize Starsim: install Miniconda, create a virtual 
 #' environment ("r-reticulate"), and install Starsim into it
 #'
-#' @return
-#' @export
-#'
+#' @return null
 #' @examples
-init_starsim <- function(..., envname = "r-reticulate") {
-  if (!reticulate::py_available(initialize = TRUE)) {
+#' init_starsim()
+init_starsim <- function(..., install_python = TRUE, envname = "r-reticulate") {
+  if (install_python && (!reticulate::py_available(initialize = TRUE))) {
     print('Python not available, installing Miniconda ...')
     reticulate::install_miniconda()
   } else {
@@ -23,10 +22,9 @@ init_starsim <- function(..., envname = "r-reticulate") {
 
 #' Reinstall Starsim into the current environment ("r-reticulate")
 #'
-#' @return
-#' @export
-#'
+#' @return null
 #' @examples
+#' reinstall_starsim('my-starsim-env')
 reinstall_starsim <- function(..., envname = "r-reticulate") {
   reticulate::py_install(
     "starsim", 
