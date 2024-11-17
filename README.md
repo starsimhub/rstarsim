@@ -56,7 +56,7 @@ sim <- ss$Sim(pars)
 sim$run()
 sim$diseases$sir$plot()
 ```
-<img src="man/example-r.png" alt="SIR dynamics" />
+<img src="man/figures/example-r.png" alt="SIR dynamics" />
 
 
 ## Troubleshooting
