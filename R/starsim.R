@@ -4,10 +4,11 @@
 #' environment ("r-reticulate"), and install Starsim into it
 #'
 #' @return null
+#' @export
 #' @examples
 #' init_starsim()
-init_starsim <- function(..., install_python = TRUE, envname = "r-reticulate") {
-  if (install_python && (!reticulate::py_available(initialize = TRUE))) {
+init_starsim <- function(..., envname = "r-reticulate") {
+  if (!reticulate::py_available(initialize = TRUE)) {
     print('Python not available, installing Miniconda ...')
     reticulate::install_miniconda()
   } else {
@@ -23,6 +24,7 @@ init_starsim <- function(..., install_python = TRUE, envname = "r-reticulate") {
 #' Reinstall Starsim into the current environment ("r-reticulate")
 #'
 #' @return null
+#' @export
 #' @examples
 #' reinstall_starsim('my-starsim-env')
 reinstall_starsim <- function(..., envname = "r-reticulate") {
@@ -34,12 +36,18 @@ reinstall_starsim <- function(..., envname = "r-reticulate") {
     ...)
 }
 
-#' Load all components of the Starsim environment
+#' Load all components of the Starsim environment, including: `ss` (all
+#' Starsim functionality); NumPy (`np`), pandas (`pd`), Sciris (`sc`), and
+#' Matplotlib (`plt`), for additional Python functionality; and some of
+#' the core Starsim classes (e.g. `Sim`, `Disease`). 
 #'
-#' @return
+#' @return null
 #' @export
-#'
 #' @examples
+#' load_starsim()
+#' ss$options(jupyter=TRUE)
+#' sim <- ss$Sim(diseases='sis', networks='random')
+#' sim$run()
 load_starsim <- function(envname = "r-reticulate") {
 
   # Set the virtual environment if an environment name is given
