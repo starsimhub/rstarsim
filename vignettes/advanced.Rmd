@@ -18,10 +18,11 @@ knitr::opts_chunk$set(
 This example illustrates how to creating a custom disease module. It is a translation of Starsim's [Diseases developer tutorial](https://docs.starsim.org/tutorials/dev_tut_diseases.html) to R.
 
 To recap that tutorial, the main customizations we are performing here are:
-1. In `__init__()` we added the extra pars and states needed for our model.
-2. We defined infectious to include both infected and exposed people - this means that we can just reuse the existing logic for how the SIR model handles transmission.
-3. We updated `step_state()` and `step_die()` to include changes to the exposed state.
-4. We rewrote `set_prognoses()` to include the new exposed state.
+
+#. In `__init__()` we added the extra pars and states needed for our model.
+#. We defined infectious to include both infected and exposed people - this means that we can just reuse the existing logic for how the SIR model handles transmission.
+#. We updated `step_state()` and `step_die()` to include changes to the exposed state.
+#. We rewrote `set_prognoses()` to include the new exposed state.
 
 ```{r, eval = FALSE}
 library(starsim)
