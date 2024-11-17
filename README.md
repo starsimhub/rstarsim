@@ -56,7 +56,7 @@ sim <- ss$Sim(pars)
 sim$run()
 sim$diseases$sir$plot()
 ```
-![image SIR dynamics plot](example-r.png)
+![image SIR dynamics plot](./example-r.png)
 
 
 ## Troubleshooting
