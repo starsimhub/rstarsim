@@ -1,11 +1,11 @@
 # R-Starsim
 
-R-Starsim is a package to facilitate the usage of [Starsim](https://starsim.org) from R. It uses [reticulate](https://rstudio.github.io/reticulate/index.html) to communicate between Python and R.
+[Starsim](https://starsim.org) is a framework for modeling the spread of diseases among agents via dynamic transmission networks. R-Starsim is a wrapper that facilitates the usage of Starsim from R. It uses [reticulate](https://rstudio.github.io/reticulate/index.html) to communicate between Python and R.
 
 
 ## Installation
 
-Although R-Starsim will be released on CRAN in future, for now it can be installed via GitHub:
+R-Starsim will be released on CRAN in future, but for now it can be installed via GitHub:
 
 ```R
 # install.packages("devtools")
@@ -21,6 +21,14 @@ If you want to reinstall Starsim (e.g. to update the version), you can use:
 library(starsim)
 reinstall_starsim()
 ```
+
+If you already have Starsim installed in a Python (specifically `conda`) environment, you can skip installation and proceed directly to using Starsim in R. If the environment you've installed Starsim into is called `starsim_env`, then you can start using Starsim with:
+```R
+library(starsim)
+load_starsim("starsim_env")
+```
+
+If you've installed it into your base `conda` environment, then you can simply use `load_starsim("base")`.
 
 
 ## Usage
