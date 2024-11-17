@@ -36,6 +36,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/install.html">Installation</a></li>
+    <li><a class="dropdown-item" href="articles/simple.html">Simple usage</a></li>
   </ul>
 </li>
       </ul>
@@ -54,11 +55,11 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="r-starsim">R-Starsim<a class="anchor" aria-label="anchor" href="#r-starsim"></a>
 </h1></div>
-<p>R-Starsim is a package to facilitate the usage of <a href="https://starsim.org" class="external-link">Starsim</a> from R. It uses <a href="https://rstudio.github.io/reticulate/index.html" class="external-link">reticulate</a> to communicate between Python and R.</p>
+<p><a href="https://starsim.org" class="external-link">Starsim</a> is a framework for modeling the spread of diseases among agents via dynamic transmission networks. R-Starsim is a wrapper that facilitates the usage of Starsim from R. It uses <a href="https://rstudio.github.io/reticulate/index.html" class="external-link">reticulate</a> to communicate between Python and R.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Although R-Starsim will be released on CRAN in future, for now it can be installed via GitHub:</p>
+<p>R-Starsim will be released on CRAN in future, but for now it can be installed via GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"starsimhub/rstarsim"</span><span class="op">)</span></span>
@@ -69,6 +70,11 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/reinstall_starsim.html">reinstall_starsim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>If you already have Starsim installed in a Python (specifically <code>conda</code>) environment, you can skip installation and proceed directly to using Starsim in R. If the environment you’ve installed Starsim into is called <code>starsim_env</code>, then you can start using Starsim with:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/load_starsim.html">load_starsim</a></span><span class="op">(</span><span class="st">"starsim_env"</span><span class="op">)</span></span></code></pre></div>
+<p>If you’ve installed it into your base <code>conda</code> environment, then you can simply use <code>load_starsim("base")</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -78,7 +84,7 @@
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load Starsim</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/load_starsim.html">load_starsim</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -112,7 +118,7 @@
 <h3 id="installation-1">Installation<a class="anchor" aria-label="anchor" href="#installation-1"></a>
 </h3>
 <p>If <code><a href="reference/init_starsim.html">init_starsim()</a></code> fails, try creating your own Python environment (via <code>conda</code> or <code>miniconda</code>), installing Starsim manually, and then calling <code><a href="reference/load_starsim.html">load_starsim()</a></code> with an argument. For example, if your custom <code>conda</code> environment is called <code>r-starsim</code>, you would use:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/load_starsim.html">load_starsim</a></span><span class="op">(</span><span class="st">"r-starsim"</span><span class="op">)</span></span></code></pre></div>
 </div>

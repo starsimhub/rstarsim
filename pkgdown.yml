@@ -3,7 +3,8 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   install: install.html
-last_built: 2024-11-17T16:37Z
+  simple: simple.html
+last_built: 2024-11-17T19:30Z
 urls:
   reference: https://r.starsim.org/reference
   article: https://r.starsim.org/articles
