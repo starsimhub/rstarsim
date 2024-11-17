@@ -17,7 +17,7 @@ pars <- list(
         n_contacts = 4
     ),
     diseases = list(
-        # type = 'sir',
+        type = 'sir',
         dur_inf = 10,
         beta = 0.1
     )
