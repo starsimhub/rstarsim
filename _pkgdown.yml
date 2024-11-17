@@ -2,3 +2,11 @@ url: https://r.starsim.org
 
 template:
   bootstrap: 5
+
+articles:
+- title: Vignettes
+  navbar: Vignettes
+  contents:
+  - install
+  - simple
+  - advanced
