@@ -69,9 +69,6 @@
 
     
     
-<div class="section level2">
-<h2 id="advanced-usage-example">Advanced usage example<a class="anchor" aria-label="anchor" href="#advanced-usage-example"></a>
-</h2>
 <p>This example illustrates how to creating a custom disease module. It
 is a translation of Starsim’s <a href="https://docs.starsim.org/tutorials/dev_tut_diseases.html" class="external-link">Diseases
 developer tutorial</a> to R.</p>
@@ -92,7 +89,7 @@ developer tutorial</a> to R.</p>
 <span></span>
 <span>      <span class="co"># Parameters specific to SEIR: duration of exposure</span></span>
 <span>      <span class="va">self</span><span class="op">$</span><span class="fu">define_pars</span><span class="op">(</span></span>
-<span>          dur_exp <span class="op">=</span> <span class="va">ss</span><span class="op">$</span><span class="fu">lognorm_ex</span><span class="op">(</span><span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>          dur_exp <span class="op">=</span> <span class="va">ss</span><span class="op">$</span><span class="fu">lognorm_ex</span><span class="op">(</span><span class="fl">0.5</span><span class="op">)</span>, <span class="co"># Define an explicit ("ex") lognormal distribution with a mean of 0.5</span></span>
 <span>      <span class="op">)</span></span>
 <span>      <span class="va">self</span><span class="op">$</span><span class="fu">update_pars</span><span class="op">(</span><span class="va">pars</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -109,7 +106,7 @@ developer tutorial</a> to R.</p>
 <span>        <span class="va">ss</span><span class="op">$</span><span class="va">SIR</span><span class="op">$</span><span class="fu">step_state</span><span class="op">(</span><span class="va">self</span><span class="op">)</span> <span class="co"># Perform SIR updates</span></span>
 <span></span>
 <span>        <span class="co"># Additional updates: progress exposed -&gt; infected</span></span>
-<span>        <span class="va">infected</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">exposed</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">self</span><span class="op">$</span><span class="va">ti_infected</span> <span class="op">&lt;=</span> <span class="va">self</span><span class="op">$</span><span class="va">ti</span><span class="op">)</span></span>
+<span>        <span class="va">infected</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">exposed</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">self</span><span class="op">$</span><span class="va">ti_infected</span> <span class="op">&lt;=</span> <span class="va">self</span><span class="op">$</span><span class="va">ti</span><span class="op">)</span> <span class="co"># Check who is scheduled to become infected</span></span>
 <span>        <span class="va">self</span><span class="op">$</span><span class="va">exposed</span><span class="op">[</span><span class="va">infected</span><span class="op">]</span> <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>        <span class="va">self</span><span class="op">$</span><span class="va">infected</span><span class="op">[</span><span class="va">infected</span><span class="op">]</span> <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu">py_none</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
@@ -127,29 +124,28 @@ developer tutorial</a> to R.</p>
 <span>      <span class="va">ss</span><span class="op">$</span><span class="va">SIR</span><span class="op">$</span><span class="fu">set_prognoses</span><span class="op">(</span><span class="va">self</span>, <span class="va">uids</span>, <span class="va">sources</span><span class="op">)</span> <span class="co"># Perform SIR updates</span></span>
 <span>      </span>
 <span>      <span class="co"># Define handling of exposure</span></span>
-<span>      <span class="va">ti</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">ti</span></span>
-<span>      <span class="va">self</span><span class="op">$</span><span class="va">susceptible</span><span class="op">[</span><span class="va">uids</span><span class="op">]</span> <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>      <span class="va">self</span><span class="op">$</span><span class="va">exposed</span><span class="op">[</span><span class="va">uids</span><span class="op">]</span> <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>      <span class="va">self</span><span class="op">$</span><span class="va">ti_exposed</span><span class="op">[</span><span class="va">uids</span><span class="op">]</span> <span class="op">=</span> <span class="va">ti</span></span>
+<span>      <span class="va">ti</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">ti</span> <span class="co"># Current module time index</span></span>
+<span>      <span class="va">self</span><span class="op">$</span><span class="va">susceptible</span><span class="op">[</span><span class="va">uids</span><span class="op">]</span> <span class="op">=</span> <span class="cn">FALSE</span> <span class="co"># People exposed are no longer susceptible</span></span>
+<span>      <span class="va">self</span><span class="op">$</span><span class="va">exposed</span><span class="op">[</span><span class="va">uids</span><span class="op">]</span> <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># But they are exposed</span></span>
+<span>      <span class="va">self</span><span class="op">$</span><span class="va">ti_exposed</span><span class="op">[</span><span class="va">uids</span><span class="op">]</span> <span class="op">=</span> <span class="va">ti</span> <span class="co"># Track what time they got infected</span></span>
 <span></span>
 <span>      <span class="co"># Calculate and schedule future outcomes</span></span>
-<span>      <span class="va">dur_exp</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">pars</span><span class="op">[</span><span class="st">'dur_exp'</span><span class="op">]</span><span class="op">$</span><span class="fu">rvs</span><span class="op">(</span><span class="va">uids</span><span class="op">)</span></span>
-<span>      <span class="va">self</span><span class="op">$</span><span class="va">ti_infected</span><span class="op">[</span><span class="va">uids</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">ti</span> <span class="op">+</span> <span class="va">dur_exp</span></span>
-<span>      <span class="va">dur_inf</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">pars</span><span class="op">[</span><span class="st">'dur_inf'</span><span class="op">]</span><span class="op">$</span><span class="fu">rvs</span><span class="op">(</span><span class="va">uids</span><span class="op">)</span></span>
-<span>      <span class="va">will_die</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">pars</span><span class="op">[</span><span class="st">'p_death'</span><span class="op">]</span><span class="op">$</span><span class="fu">rvs</span><span class="op">(</span><span class="va">uids</span><span class="op">)</span></span>
-<span>      <span class="va">self</span><span class="op">$</span><span class="va">ti_recovered</span><span class="op">[</span><span class="va">uids</span><span class="op">[</span><span class="op">!</span><span class="va">will_die</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">ti</span> <span class="op">+</span> <span class="va">dur_inf</span><span class="op">[</span><span class="op">!</span><span class="va">will_die</span><span class="op">]</span></span>
-<span>      <span class="va">self</span><span class="op">$</span><span class="va">ti_dead</span><span class="op">[</span><span class="va">uids</span><span class="op">[</span><span class="va">will_die</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">ti</span> <span class="op">+</span> <span class="va">dur_inf</span><span class="op">[</span><span class="va">will_die</span><span class="op">]</span></span>
+<span>      <span class="va">dur_exp</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">pars</span><span class="op">[</span><span class="st">'dur_exp'</span><span class="op">]</span><span class="op">$</span><span class="fu">rvs</span><span class="op">(</span><span class="va">uids</span><span class="op">)</span> <span class="co"># Get random numbers for the duration of exposure</span></span>
+<span>      <span class="va">self</span><span class="op">$</span><span class="va">ti_infected</span><span class="op">[</span><span class="va">uids</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">ti</span> <span class="op">+</span> <span class="va">dur_exp</span> <span class="co"># Set the time at which people move from exposed to infected</span></span>
+<span>      <span class="va">dur_inf</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">pars</span><span class="op">[</span><span class="st">'dur_inf'</span><span class="op">]</span><span class="op">$</span><span class="fu">rvs</span><span class="op">(</span><span class="va">uids</span><span class="op">)</span> <span class="co"># Set the duration of infection</span></span>
+<span>      <span class="va">will_die</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">pars</span><span class="op">[</span><span class="st">'p_death'</span><span class="op">]</span><span class="op">$</span><span class="fu">rvs</span><span class="op">(</span><span class="va">uids</span><span class="op">)</span> <span class="co"># Choose who will die</span></span>
+<span>      <span class="va">self</span><span class="op">$</span><span class="va">ti_recovered</span><span class="op">[</span><span class="va">uids</span><span class="op">[</span><span class="op">!</span><span class="va">will_die</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">ti</span> <span class="op">+</span> <span class="va">dur_inf</span><span class="op">[</span><span class="op">!</span><span class="va">will_die</span><span class="op">]</span> <span class="co"># Schedule people to recover</span></span>
+<span>      <span class="va">self</span><span class="op">$</span><span class="va">ti_dead</span><span class="op">[</span><span class="va">uids</span><span class="op">[</span><span class="va">will_die</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">ti</span> <span class="op">+</span> <span class="va">dur_inf</span><span class="op">[</span><span class="va">will_die</span><span class="op">]</span> <span class="co"># Schedule people to die</span></span>
 <span></span>
 <span>      <span class="co"># Update result count of new infections</span></span>
-<span>      <span class="va">new_inf</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">results</span><span class="op">[</span><span class="st">'new_infections'</span><span class="op">]</span></span>
-<span>      <span class="va">new_inf</span><span class="op">[</span><span class="va">self</span><span class="op">$</span><span class="va">ti</span><span class="op">]</span> <span class="op">=</span> <span class="va">new_inf</span><span class="op">[</span><span class="va">self</span><span class="op">$</span><span class="va">ti</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">uids</span><span class="op">)</span></span>
+<span>      <span class="va">self</span><span class="op">$</span><span class="va">results</span><span class="op">[</span><span class="st">'new_infections'</span><span class="op">]</span><span class="op">[</span><span class="va">self</span><span class="op">$</span><span class="va">ti</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">uids</span><span class="op">)</span> <span class="co"># Store the number of new infections in the results</span></span>
 <span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu">py_none</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">}</span>,</span>
 <span></span>
 <span>    <span class="co"># Plot results using ggplot</span></span>
 <span>    plot <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">self</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span>      <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">results</span><span class="op">$</span><span class="fu">to_df</span><span class="op">(</span><span class="op">)</span></span>
+<span>      <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="va">results</span><span class="op">$</span><span class="fu">to_df</span><span class="op">(</span><span class="op">)</span> <span class="co"># Export results to an R data.frame</span></span>
 <span></span>
 <span>      <span class="va">fig</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">df</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">timevec</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>        <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">n_susceptible</span>, colour <span class="op">=</span> <span class="st">"Susceptible"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -164,14 +160,12 @@ developer tutorial</a> to R.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Run and plot</span></span>
-<span><span class="va">seir</span> <span class="op">&lt;-</span> <span class="fu">SEIR</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="va">ss</span><span class="op">$</span><span class="fu">Sim</span><span class="op">(</span>diseases<span class="op">=</span><span class="va">seir</span>, networks<span class="op">=</span><span class="st">'random'</span><span class="op">)</span></span>
-<span><span class="va">sim</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">sim</span><span class="op">$</span><span class="va">diseases</span><span class="op">$</span><span class="va">seir</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">seir</span> <span class="op">&lt;-</span> <span class="fu">SEIR</span><span class="op">(</span><span class="op">)</span> <span class="co"># Create the disease module</span></span>
+<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="va">ss</span><span class="op">$</span><span class="fu">Sim</span><span class="op">(</span>diseases<span class="op">=</span><span class="va">seir</span>, networks<span class="op">=</span><span class="st">'random'</span><span class="op">)</span> <span class="co"># Create a simple sim with default parameters</span></span>
+<span><span class="va">sim</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="op">)</span> <span class="co"># Run</span></span>
+<span><span class="va">sim</span><span class="op">$</span><span class="va">diseases</span><span class="op">$</span><span class="va">seir</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span> <span class="co"># Call the custom ggplot function</span></span></code></pre></div>
 <p><img src="advanced-seir.png" alt="Custom SEIR module"></p>
-</div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
-    </nav></aside>
+  </main>
 </div>
 
 
