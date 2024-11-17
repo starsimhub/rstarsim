@@ -69,13 +69,22 @@
 
     
     
+<div class="section level2">
+<h2 id="advanced-usage-example">Advanced usage example<a class="anchor" aria-label="anchor" href="#advanced-usage-example"></a>
+</h2>
 <p>This example illustrates how to creating a custom disease module. It
 is a translation of Starsim’s <a href="https://docs.starsim.org/tutorials/dev_tut_diseases.html" class="external-link">Diseases
 developer tutorial</a> to R.</p>
+<p>To recap that tutorial, the main customizations we are performing
+here are: 1. In <code>__init__()</code> we added the extra pars and
+states needed for our model. 2. We defined infectious to include both
+infected and exposed people - this means that we can just reuse the
+existing logic for how the SIR model handles transmission. 3. We updated
+<code>step_state()</code> and <code>step_die()</code> to include changes
+to the exposed state. 4. We rewrote <code>set_prognoses()</code> to
+include the new exposed state.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Pull out the commands for generating the plots</span></span>
-<span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/load_starsim.html">load_starsim</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create a new class for an SEIR disease</span></span>
@@ -165,7 +174,17 @@ developer tutorial</a> to R.</p>
 <span><span class="va">sim</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="op">)</span> <span class="co"># Run</span></span>
 <span><span class="va">sim</span><span class="op">$</span><span class="va">diseases</span><span class="op">$</span><span class="va">seir</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span> <span class="co"># Call the custom ggplot function</span></span></code></pre></div>
 <p><img src="advanced-seir.png" alt="Custom SEIR module"></p>
-  </main>
+<div class="section level3">
+<h3 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
+</h3>
+<p>For more intermediate examples between the simple example (which is
+very simple) and this one (which is very advanced), please see the <a href="https://docs.starsim.org" class="external-link">Starsim documentation</a>. If you still
+have questions, please <a href="mailto:info@starsim.org">reach out to
+us</a> – we’re very happy to help!</p>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
