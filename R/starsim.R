@@ -7,8 +7,10 @@
 #'
 #' @return null
 #' @export
-#' @examplesIf FALSE
+#' @examples
+#' \dontrun{
 #' init_starsim()
+#' }
 init_starsim <- function(..., envname = "r-reticulate", required = FALSE) {
   if (!reticulate::py_available(initialize = TRUE)) {
     print('Python not available, installing Miniconda ...')
@@ -29,8 +31,10 @@ init_starsim <- function(..., envname = "r-reticulate", required = FALSE) {
 #'
 #' @return null
 #' @export
-#' @examplesIf FALSE
+#' @examples
+#' \dontrun{
 #' reinstall_starsim()
+#' }
 reinstall_starsim <- function(..., envname = "r-reticulate") {
   reticulate::py_install(
     "starsim",
@@ -51,10 +55,12 @@ reinstall_starsim <- function(..., envname = "r-reticulate") {
 #'
 #' @return null
 #' @export
-#' @examplesIf FALSE
+#' @examples
+#' \dontrun{
 #' load_starsim()
 #' sim <- ss$Sim(diseases='sis', networks='random')
 #' sim$run()
+#' }
 load_starsim <- function(envname = "r-reticulate", required = FALSE) {
 
   # Set the virtual environment if an environment name is given
