@@ -1,10 +1,10 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>http://r.starsim.org/404.html</loc></url>
-<url><loc>http://r.starsim.org/LICENSE-text.html</loc></url>
-<url><loc>http://r.starsim.org/articles/index.html</loc></url>
-<url><loc>http://r.starsim.org/articles/install.html</loc></url>
-<url><loc>http://r.starsim.org/authors.html</loc></url>
-<url><loc>http://r.starsim.org/index.html</loc></url>
-<url><loc>http://r.starsim.org/reference/index.html</loc></url>
+<url><loc>https://r.starsim.org, https://github.com/starsimhub/rstarsim/404.html</loc></url>
+<url><loc>https://r.starsim.org, https://github.com/starsimhub/rstarsim/LICENSE-text.html</loc></url>
+<url><loc>https://r.starsim.org, https://github.com/starsimhub/rstarsim/articles/index.html</loc></url>
+<url><loc>https://r.starsim.org, https://github.com/starsimhub/rstarsim/articles/install.html</loc></url>
+<url><loc>https://r.starsim.org, https://github.com/starsimhub/rstarsim/authors.html</loc></url>
+<url><loc>https://r.starsim.org, https://github.com/starsimhub/rstarsim/index.html</loc></url>
+<url><loc>https://r.starsim.org, https://github.com/starsimhub/rstarsim/reference/index.html</loc></url>
 </urlset>
 
