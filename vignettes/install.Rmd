@@ -39,5 +39,6 @@ init_starsim()
 
 5. You can test the install with `ss$demo()`, which should run a sim and plot the results.
 ```{r}
+load_starsim()
 ss$demo()
 ```
