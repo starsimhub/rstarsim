@@ -1,0 +1,31 @@
+---
+title: "Troubleshooting"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Troubleshooting
+
+### Installation
+
+If `init_starsim()` fails, try creating your own Python environment (via `conda` or `miniconda`), installing Starsim manually, and then calling `load_starsim()` with an argument. For example, if your custom `conda` environment is called `r-starsim`, you would use:
+```R
+library(starsim)
+load_starsim("r-starsim")
+```
+
+### Plotting
+
+- If plots don't appear, try `plt$show()` after calling `plot()`, or set `ss$options(reticulate=True)` before plotting.
+- If the plots don't appear _and_ they cause RStudio to crash, either set the backend to Agg (Tools > General Options > General > Graphics > Backend), or call `X11()` somewhere in your script before calling `plot()`.
+- If plots appear but the scaling is wrong (e.g. the text is colliding), you can either (a) zoom out in RStudio (this changes the inferred scaling factor), or (b) change the default font size with e.g. `sc$options(fontsize=6)` (note s**c** = Sciris rather than s**s** = Starsim).
+- If all else fails, plotting seems to work better from VS Code than RStudio.
