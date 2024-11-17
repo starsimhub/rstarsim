@@ -47,8 +47,81 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="r-starsim">R-Starsim<a class="anchor" aria-label="anchor" href="#r-starsim"></a>
 </h1></div>
-<p><strong>WARNING</strong>: This is not yet ready to use!</p>
-<p>We are in the process of porting Starsim to R. The current version is not yet functional. Please check back soon for updates.</p>
+<p>R-Starsim is a package to facilitate the usage of <a href="https://starsim.org" class="external-link">Starsim</a> from R. It is primarily a wrapper for <a href="https://rstudio.github.io/reticulate/index.html" class="external-link">reticulate</a>, which facilitates communication between Python and R.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>Although R-Starsim will be released on CRAN in future, for the time being, it can be installed via GitHub:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"starsimhub/rstarsim"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/" class="external-link">starsim</a></span><span class="op">)</span></span>
+<span><span class="fu">init_starsim</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>If you do not already have a <code>reticulate</code> Python environment set up, R-Starsim will try to make one for you (by downloading Miniconda, creating an <code>r-reticulate</code> environment, and activating it).</p>
+<p>If you want to reinstall Starsim (e.g. to update the version), you can use:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/" class="external-link">starsim</a></span><span class="op">)</span></span>
+<span><span class="fu">reinstall_starsim</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
+<p>All Starsim Python functions and classes are available in R. In Python, usage is typically <code>import starsim as ss</code>. To emulate this behavior in R, Starsim is made available as the variable <code>ss</code>, e.g. <code>sim = ss.Sim()</code> in Python becomes <code>sim &lt;- ss$Sim()</code> in R. In addition, major Starsim classes (such as <code>Sim</code>, <code>Network</code>, <code>Disease</code>, etc.) are imported directly into the R namespace (e.g. <code>sim &lt;- Sim()</code> also works).</p>
+</div>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load Starsim</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/" class="external-link">starsim</a></span><span class="op">)</span></span>
+<span><span class="fu">load_starsim</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Set the simulation parameters</span></span>
+<span><span class="va">pars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    n_agents <span class="op">=</span> <span class="fl">10000</span>,</span>
+<span>    birth_rate <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>    death_rate <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>    networks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>        type <span class="op">=</span> <span class="st">'randomnet'</span>,</span>
+<span>        n_contacts <span class="op">=</span> <span class="fl">4</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    diseases <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>        type <span class="op">=</span> <span class="st">'sir'</span>,</span>
+<span>        dur_inf <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>        beta <span class="op">=</span> <span class="fl">0.1</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create, run, and plot the simulation</span></span>
+<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="va">ss</span><span class="op">$</span><span class="fu">Sim</span><span class="op">(</span><span class="va">pars</span><span class="op">)</span></span>
+<span><span class="va">sim</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">sim</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
+</h2>
+<div class="section level3">
+<h3 id="installation-1">Installation<a class="anchor" aria-label="anchor" href="#installation-1"></a>
+</h3>
+<p>If <code>init_starsim()</code> fails, try creating your own Python environment (via <code>conda</code> or <code>miniconda</code>), installing Starsim manually, and then calling <code>load_starsim()</code> with an argument:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">load_starsm</span><span class="op">(</span><span class="st">"my_starsim_env"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a>
+</h3>
+<ul>
+<li>If plots don’t appear, try <code>plt$show()</code> after calling <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>, or set <code>ss$options(reticulate=True)</code> before plotting.</li>
+<li>If the plots don’t appear <em>and</em> they cause RStudio to crash, either set the backend to Agg (Tools &gt; General Options &gt; General &gt; Graphics &gt; Backend), or call <code><a href="https://rdrr.io/r/grDevices/x11.html" class="external-link">X11()</a></code> somewhere in your script before calling <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>.</li>
+<li>If plots appear but the scaling is wrong (e.g. the text is colliding), you can either (a) zoom out in RStudio (this changes the inferred scaling factor), or (b) change the default font size with e.g. <code>sc$options(fontsize=6)</code>.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="other-issues">Other issues<a class="anchor" aria-label="anchor" href="#other-issues"></a>
+</h3>
+<p>See <a href="https://vegawidget.github.io/altair/articles/field-guide-python.html" class="external-link">this article</a> with tips on using Python packages from <code>reticulate</code>, or <a href="mailto:info@starsim.org">email us</a> for help.</p>
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
