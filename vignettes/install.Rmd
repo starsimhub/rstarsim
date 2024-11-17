@@ -18,32 +18,28 @@ knitr::opts_chunk$set(
 Installing Starsim should be straightforward, whether or not you have Python or `reticulate` already configured on your computer.
 
 1. Install `devtools` if you haven't already:
-```{r}
+```{r, eval=FALSE}
 install.packages("devtools")
 ```
 
 2. Install the R-Starsim package. This installs the R _wrapper_ for Starsim, but not Starsim itself yet.
-```{r}
+```{r, eval=FALSE}
 devtools::install_github("starsimhub/rstarsim")
 ```
 
 3. Load the wrapper:
-```{r}
+```{r, eval=FALSE}
 library(starsim)
 ```
 
 4. Finally, we install Starsim itself. This step will also install Python (specifically Miniconda) if needed, and will create a virtual environment (`r-reticulate`) unless it already exists. Note that this step may take some time (3-10 min depending on your computer and internet connection).
-```{r}
+```{r, eval=FALSE}
 init_starsim()
 ```
 
-Test reinstall:
-```{r}
-reinstall_starsim() # TEMP
-```
-
 5. You can test the install with `ss$demo()`, which should run a sim and plot the results.
-```{r}
+```{r, eval=FALSE}
 load_starsim()
 ss$demo()
 ```
+<img src="install-demo.png" alt="Demo plot" />

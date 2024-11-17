@@ -7,7 +7,7 @@
 #'
 #' @return null
 #' @export
-#' @examples
+#' @examplesIf FALSE
 #' init_starsim()
 init_starsim <- function(..., envname = "r-reticulate", required = FALSE) {
   if (!reticulate::py_available(initialize = TRUE)) {
@@ -29,7 +29,7 @@ init_starsim <- function(..., envname = "r-reticulate", required = FALSE) {
 #'
 #' @return null
 #' @export
-#' @examples
+#' @examplesIf FALSE
 #' reinstall_starsim()
 reinstall_starsim <- function(..., envname = "r-reticulate") {
   reticulate::py_install(
@@ -51,7 +51,7 @@ reinstall_starsim <- function(..., envname = "r-reticulate") {
 #'
 #' @return null
 #' @export
-#' @examples
+#' @examplesIf FALSE
 #' load_starsim()
 #' sim <- ss$Sim(diseases='sis', networks='random')
 #' sim$run()
