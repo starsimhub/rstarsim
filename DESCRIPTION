@@ -21,7 +21,7 @@ Config/reticulate:
   )
 Imports: 
     reticulate
-url: https://r.starsim.org/
+URL: https://r.starsim.org/
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

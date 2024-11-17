@@ -1,6 +1,8 @@
 # All publicly visible functions
 
-#' Initialize Starsim: install Miniconda, create a virtual
+#' Initialize Starsim
+#'
+#' Perform the steps needed to initialize Starsim: install Miniconda, create a virtual
 #' environment ("r-reticulate"), and install Starsim into it
 #'
 #' @return null
@@ -21,7 +23,9 @@ init_starsim <- function(..., envname = "r-reticulate", required = FALSE) {
   reticulate::use_condaenv(envname, required = required)
 }
 
-#' Reinstall Starsim into the current environment ("r-reticulate")
+#' Reinstall Starsim
+#'
+#' Reinstalls Starsim into the current environment ("r-reticulate" by default)
 #'
 #' @return null
 #' @export
@@ -36,16 +40,19 @@ reinstall_starsim <- function(..., envname = "r-reticulate") {
     ...)
 }
 
+#' Load Starsim
+#'
 #' Load all components of the Starsim environment, including: `ss` (all
 #' Starsim functionality); NumPy (`np`), pandas (`pd`), Sciris (`sc`), and
 #' Matplotlib (`plt`), for additional Python functionality; and some of
-#' the core Starsim classes (e.g. `Sim`, `Disease`).
+#' the core Starsim classes (e.g. `Sim`, `Disease`). After installation,
+#' this is the only function that needs to be called from R-Starsim;
+#' everything else is accessed via `ss`.
 #'
 #' @return null
 #' @export
 #' @examples
 #' load_starsim()
-#' ss$options(jupyter=TRUE)
 #' sim <- ss$Sim(diseases='sis', networks='random')
 #' sim$run()
 load_starsim <- function(envname = "r-reticulate", required = FALSE) {
