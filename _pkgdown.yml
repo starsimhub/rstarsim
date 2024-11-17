@@ -4,7 +4,9 @@ template:
   bootstrap: 5
 
 articles:
-- contents:
+- title: Vignettes
+  navbar: Vignettes
+  contents:
   - install
   - simple
   - advanced
