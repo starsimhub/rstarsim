@@ -10,3 +10,7 @@ articles:
   - install
   - simple
   - advanced
+- title: User guides
+  navbar: User guides
+  contents:
+  - troubleshooting
