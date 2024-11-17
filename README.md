@@ -71,7 +71,8 @@ load_starsm("my_starsim_env")
 - If plots don't appear, try `plt$show()` after calling `plot()`, or set `ss$options(reticulate=True)` before plotting.
 - If the plots don't appear _and_ they cause RStudio to crash, either set the backend to Agg (Tools > General Options > General > Graphics > Backend), or call `X11()` somewhere in your script before calling `plot()`.
 - If plots appear but the scaling is wrong (e.g. the text is colliding), you can either (a) zoom out in RStudio (this changes the inferred scaling factor), or (b) change the default font size with e.g. `sc$options(fontsize=6)`.
+- If all else fails, plotting seems to work better from VS Code than RStudio.
 
 ### Other issues
 
-See [this article](https://vegawidget.github.io/altair/articles/field-guide-python.html) with tips on using Python packages from `reticulate`, or [email us](mailto:info@starsim.org) for help.
+Questions? Comments? Bugs? Please [open an issue](https://github.com/starsimhub/rstarsim/issues/new/choose) or [email us](mailto:info@starsim.org) for help.
