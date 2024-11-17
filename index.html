@@ -40,6 +40,9 @@
     <li><a class="dropdown-item" href="articles/install.html">Installation</a></li>
     <li><a class="dropdown-item" href="articles/simple.html">Simple usage</a></li>
     <li><a class="dropdown-item" href="articles/advanced.html">Advanced usage</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>User guides</h6></li>
+    <li><a class="dropdown-item" href="articles/troubleshooting.html">Troubleshooting</a></li>
   </ul>
 </li>
       </ul>
@@ -115,31 +118,9 @@
 <p><img src="reference/figures/example-r.png" alt="SIR dynamics"></p>
 </div>
 <div class="section level2">
-<h2 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
+<h2 id="contact">Contact<a class="anchor" aria-label="anchor" href="#contact"></a>
 </h2>
-<div class="section level3">
-<h3 id="installation-1">Installation<a class="anchor" aria-label="anchor" href="#installation-1"></a>
-</h3>
-<p>If <code><a href="reference/init_starsim.html">init_starsim()</a></code> fails, try creating your own Python environment (via <code>conda</code> or <code>miniconda</code>), installing Starsim manually, and then calling <code><a href="reference/load_starsim.html">load_starsim()</a></code> with an argument. For example, if your custom <code>conda</code> environment is called <code>r-starsim</code>, you would use:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/load_starsim.html">load_starsim</a></span><span class="op">(</span><span class="st">"r-starsim"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a>
-</h3>
-<ul>
-<li>If plots don’t appear, try <code>plt$show()</code> after calling <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>, or set <code>ss$options(reticulate=True)</code> before plotting.</li>
-<li>If the plots don’t appear <em>and</em> they cause RStudio to crash, either set the backend to Agg (Tools &gt; General Options &gt; General &gt; Graphics &gt; Backend), or call <code><a href="https://rdrr.io/r/grDevices/x11.html" class="external-link">X11()</a></code> somewhere in your script before calling <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>.</li>
-<li>If plots appear but the scaling is wrong (e.g. the text is colliding), you can either (a) zoom out in RStudio (this changes the inferred scaling factor), or (b) change the default font size with e.g. <code>sc$options(fontsize=6)</code> (note s<strong>c</strong> = Sciris rather than s<strong>s</strong> = Starsim).</li>
-<li>If all else fails, plotting seems to work better from VS Code than RStudio.</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="other-issues">Other issues<a class="anchor" aria-label="anchor" href="#other-issues"></a>
-</h3>
 <p>Questions? Comments? Bugs? Please <a href="https://github.com/starsimhub/rstarsim/issues/new/choose" class="external-link">open an issue</a> or <a href="mailto:info@starsim.org">email us</a> for help.</p>
-</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

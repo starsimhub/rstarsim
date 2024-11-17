@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Installation • starsim</title>
+<title>Troubleshooting • starsim</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Installation">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Troubleshooting">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -62,55 +62,52 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Installation</h1>
+      <h1>Troubleshooting</h1>
             
             <h4 data-toc-skip class="date">2024-11-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/starsimhub/rstarsim/blob/main/vignettes/install.Rmd" class="external-link"><code>vignettes/install.Rmd</code></a></small>
-      <div class="d-none name"><code>install.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/starsimhub/rstarsim/blob/main/vignettes/troubleshooting.Rmd" class="external-link"><code>vignettes/troubleshooting.Rmd</code></a></small>
+      <div class="d-none name"><code>troubleshooting.Rmd</code></div>
     </div>
 
     
     
 <div class="section level2">
-<h2 id="installing-starsim">Installing Starsim<a class="anchor" aria-label="anchor" href="#installing-starsim"></a>
+<h2 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
 </h2>
-<p>Installing Starsim should be straightforward, whether or not you have
-Python or <code>reticulate</code> already configured on your
-computer.</p>
-<ol style="list-style-type: decimal">
-<li>Install <code>devtools</code> if you haven’t already:</li>
-</ol>
+<div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
+<p>If <code><a href="../reference/init_starsim.html">init_starsim()</a></code> fails, try creating your own Python
+environment (via <code>conda</code> or <code>miniconda</code>),
+installing Starsim manually, and then calling
+<code><a href="../reference/load_starsim.html">load_starsim()</a></code> with an argument. For example, if your
+custom <code>conda</code> environment is called <code>r-starsim</code>,
+you would use:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span></code></pre></div>
-<ol start="2" style="list-style-type: decimal">
-<li>Install the R-Starsim package. This installs the R <em>wrapper</em>
-for Starsim, but not Starsim itself yet.</li>
-</ol>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"starsimhub/rstarsim"</span><span class="op">)</span></span></code></pre></div>
-<ol start="3" style="list-style-type: decimal">
-<li>Load the wrapper:</li>
-</ol>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span></code></pre></div>
-<ol start="4" style="list-style-type: decimal">
-<li>Finally, we install Starsim itself. This step will also install
-Python (specifically Miniconda) if needed, and will create a virtual
-environment (<code>r-reticulate</code>) unless it already exists. Note
-that this step may take some time (3-10 min depending on your computer
-and internet connection).</li>
-</ol>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/init_starsim.html">init_starsim</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<ol start="5" style="list-style-type: decimal">
-<li>You can test the install with <code>ss$demo()</code>, which should
-run a sim and plot the results.</li>
-</ol>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/load_starsim.html">load_starsim</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">ss</span><span class="op">$</span><span class="fu">demo</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="install-demo.png" alt="Demo plot"></p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/load_starsim.html">load_starsim</a></span><span class="op">(</span><span class="st">"r-starsim"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a>
+</h3>
+<ul>
+<li>If plots don’t appear, try <code>plt$show()</code> after calling
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>, or set <code>ss$options(reticulate=True)</code>
+before plotting.</li>
+<li>If the plots don’t appear <em>and</em> they cause RStudio to crash,
+either set the backend to Agg (Tools &gt; General Options &gt; General
+&gt; Graphics &gt; Backend), or call <code><a href="https://rdrr.io/r/grDevices/x11.html" class="external-link">X11()</a></code> somewhere in
+your script before calling <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>.</li>
+<li>If plots appear but the scaling is wrong (e.g. the text is
+colliding), you can either (a) zoom out in RStudio (this changes the
+inferred scaling factor), or (b) change the default font size with
+e.g. <code>sc$options(fontsize=6)</code> (note s<strong>c</strong> =
+Sciris rather than s<strong>s</strong> = Starsim).</li>
+<li>If all else fails, plotting seems to work better from VS Code than
+RStudio.</li>
+</ul>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

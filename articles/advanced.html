@@ -38,6 +38,9 @@
     <li><a class="dropdown-item" href="../articles/install.html">Installation</a></li>
     <li><a class="dropdown-item" href="../articles/simple.html">Simple usage</a></li>
     <li><a class="dropdown-item" href="../articles/advanced.html">Advanced usage</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>User guides</h6></li>
+    <li><a class="dropdown-item" href="../articles/troubleshooting.html">Troubleshooting</a></li>
   </ul>
 </li>
       </ul>
@@ -76,13 +79,18 @@
 is a translation of Starsim’s <a href="https://docs.starsim.org/tutorials/dev_tut_diseases.html" class="external-link">Diseases
 developer tutorial</a> to R.</p>
 <p>To recap that tutorial, the main customizations we are performing
-here are: 1. In <code>__init__()</code> we added the extra pars and
-states needed for our model. 2. We defined infectious to include both
-infected and exposed people - this means that we can just reuse the
-existing logic for how the SIR model handles transmission. 3. We updated
-<code>step_state()</code> and <code>step_die()</code> to include changes
-to the exposed state. 4. We rewrote <code>set_prognoses()</code> to
-include the new exposed state.</p>
+here are:</p>
+<ol>
+<li>In <code>__init__()</code> we added the extra pars and states needed
+for our model.</li>
+<li>We defined infectious to include both infected and exposed people -
+this means that we can just reuse the existing logic for how the SIR
+model handles transmission.</li>
+<li>We updated <code>step_state()</code> and <code>step_die()</code> to
+include changes to the exposed state.</li>
+<li>We rewrote <code>set_prognoses()</code> to include the new exposed
+state.</li>
+</ol>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.starsim.org/">starsim</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/load_starsim.html">load_starsim</a></span><span class="op">(</span><span class="op">)</span></span>
