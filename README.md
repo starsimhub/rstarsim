@@ -1,5 +1,70 @@
 # R-Starsim
 
-**WARNING**: This is not yet ready to use!
+R-Starsim is a package to facilitate the usage of [Starsim](https://starsim.org) from R. It is primarily a wrapper for [reticulate](https://rstudio.github.io/reticulate/index.html), which facilitates communication between Python and R.
 
-We are in the process of porting Starsim to R. The current version is not yet functional. Please check back soon for updates.
+## Installation
+
+Although R-Starsim will be released on CRAN in future, for the time being, it can be installed via GitHub:
+
+```R
+# install.packages("devtools")
+devtools::install_github("starsimhub/rstarsim")
+library(starsim)
+init_starsim()
+```
+
+If you do not already have a `reticulate` Python environment set up, R-Starsim will try to make one for you (by downloading Miniconda, creating an `r-reticulate` environment, and activating it).
+
+If you want to reinstall Starsim (e.g. to update the version), you can use:
+```R
+library(starsim)
+reinstall_starsim()
+```
+
+## Usage
+
+All Starsim Python functions and classes are available in R. In Python, usage is typically `import starsim as ss`. To emulate this behavior in R, Starsim is made available as the variable `ss`, e.g. `sim = ss.Sim()` in Python becomes `sim <- ss$Sim()` in R. In addition, major Starsim classes (such as `Sim`, `Network`, `Disease`, etc.) are imported directly into the R namespace (e.g. `sim <- Sim()` also works).
+
+## Example
+
+```R
+# Load Starsim
+library(starsim)
+load_starsim()
+
+# Set the simulation parameters
+pars <- list(
+    n_agents = 10000,
+    birth_rate = 20,
+    death_rate = 15,
+    networks = list(
+        type = 'randomnet',
+        n_contacts = 4
+    ),
+    diseases = list(
+        type = 'sir',
+        dur_inf = 10,
+        beta = 0.1
+    )
+)
+
+# Create, run, and plot the simulation
+sim <- ss$Sim(pars)
+sim$run()
+sim$plot()
+```
+
+## Troubleshooting
+
+### Installation
+
+If `init_starsim()` fails, try creating your own Python environment (via `conda` or `miniconda`), installing Starsim manually, and then calling `load_starsim()` with an argument:
+```R
+load_starsm("my_starsim_env")
+```
+
+### Plotting
+
+- If plots don't appear, try `plt$show()` after calling `plot()`, or set `ss$options(reticulate=True)` before plotting.
+- If the plots don't appear _and_ they cause RStudio to crash, either set the backend to Agg (Tools > General Options > General > Graphics > Backend), or call `X11()` somewhere in your script before calling `plot()`.
+- If plots appear but the scaling is wrong (e.g. the text is colliding), you can either (a) zoom out in RStudio (this changes the inferred scaling factor), or (b) change the default font size with e.g. `sc$options(fontsize=6)`.

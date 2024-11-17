@@ -1,6 +1,6 @@
 # Load Starsim
-library(rstarsim)
-load_starsim_env()
+library(starsim)
+load_starsim()
 
 ss$options(jupyter=TRUE)
 
@@ -23,6 +23,6 @@ pars <- list(
     )
 )
 
-s2 <- ss$Sim(pars)
-s2$run()
-s2$plot()
+sim <- ss$Sim(pars)
+sim$run()
+sim$plot()
