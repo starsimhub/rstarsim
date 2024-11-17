@@ -5,7 +5,7 @@
 #' Perform the steps needed to initialize Starsim: install Miniconda, create a virtual
 #' environment ("r-reticulate"), and install Starsim into it
 #'
-#' @return null
+#' @return NULL
 #' @export
 #' @examplesIf FALSE
 #' init_starsim()
@@ -27,7 +27,7 @@ init_starsim <- function(..., envname = "r-reticulate", required = FALSE) {
 #'
 #' Reinstalls Starsim into the current environment ("r-reticulate" by default)
 #'
-#' @return null
+#' @return NULL
 #' @export
 #' @examplesIf FALSE
 #' reinstall_starsim()
@@ -49,7 +49,7 @@ reinstall_starsim <- function(..., envname = "r-reticulate") {
 #' this is the only function that needs to be called from R-Starsim;
 #' everything else is accessed via `ss`.
 #'
-#' @return null
+#' @return NULL
 #' @export
 #' @examplesIf FALSE
 #' load_starsim()
@@ -102,4 +102,8 @@ load_starsim <- function(envname = "r-reticulate", required = FALSE) {
   assign("Disease", Disease, envir = .GlobalEnv)
   assign("Intervention", Intervention, envir = .GlobalEnv)
   assign("Analyzer", Analyzer, envir = .GlobalEnv)
+
+  # Shortcuts to reticulate functions
+  assign("PyClass", reticulate::PyClass, envir = .GlobalEnv)
+  assign("import", reticulate::import, envir = .GlobalEnv)
 }
