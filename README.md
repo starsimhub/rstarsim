@@ -56,23 +56,23 @@ sim <- ss$Sim(pars)
 sim$run()
 sim$diseases$sir$plot()
 ```
-<img src="man/example-r.png" alt="SIR dynamics plot" />
+<img src="man/example-r.png" alt="SIR dynamics" />
 
 
 ## Troubleshooting
 
 ### Installation
 
-If `init_starsim()` fails, try creating your own Python environment (via `conda` or `miniconda`), installing Starsim manually, and then calling `load_starsim()` with an argument:
+If `init_starsim()` fails, try creating your own Python environment (via `conda` or `miniconda`), installing Starsim manually, and then calling `load_starsim()` with an argument. For example, if your custom environment is called `r-starsim`, you would use:
 ```R
-load_starsm("my_starsim_env")
+load_starsm("r-starsim")
 ```
 
 ### Plotting
 
 - If plots don't appear, try `plt$show()` after calling `plot()`, or set `ss$options(reticulate=True)` before plotting.
 - If the plots don't appear _and_ they cause RStudio to crash, either set the backend to Agg (Tools > General Options > General > Graphics > Backend), or call `X11()` somewhere in your script before calling `plot()`.
-- If plots appear but the scaling is wrong (e.g. the text is colliding), you can either (a) zoom out in RStudio (this changes the inferred scaling factor), or (b) change the default font size with e.g. `sc$options(fontsize=6)`.
+- If plots appear but the scaling is wrong (e.g. the text is colliding), you can either (a) zoom out in RStudio (this changes the inferred scaling factor), or (b) change the default font size with e.g. `sc$options(fontsize=6)` (note s**c** = Sciris rather than s**s** = Starsim).
 - If all else fails, plotting seems to work better from VS Code than RStudio.
 
 ### Other issues
