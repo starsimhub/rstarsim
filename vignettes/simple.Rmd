@@ -119,7 +119,7 @@ sim$plot()
 ```
 <img src="simple-sim.png" alt="Sim plot" />
 
-(If your plot doesn't show up or looks stupendously ugly, please see the troubleshooting section of the readme.)
+(If your plot doesn't show up or looks stupendously ugly, please see the article on troubleshooting.)
 
 To plot just the results from our disease module, we can call `plot()` for that disease:
 ```{r, eval=FALSE}
