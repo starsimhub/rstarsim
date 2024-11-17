@@ -2,9 +2,10 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
+  advanced: advanced.html
   install: install.html
   simple: simple.html
-last_built: 2024-11-17T19:30Z
+last_built: 2024-11-17T20:32Z
 urls:
   reference: https://r.starsim.org/reference
   article: https://r.starsim.org/articles
