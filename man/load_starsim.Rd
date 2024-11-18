@@ -4,7 +4,7 @@
 \alias{load_starsim}
 \title{Load Starsim}
 \usage{
-load_starsim(envname = "r-reticulate", required = FALSE)
+load_starsim(envname = "r-starsim", required = FALSE)
 }
 \description{
 Load all components of the Starsim environment, including: \code{ss} (all

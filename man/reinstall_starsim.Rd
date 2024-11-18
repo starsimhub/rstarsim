@@ -4,10 +4,11 @@
 \alias{reinstall_starsim}
 \title{Reinstall Starsim}
 \usage{
-reinstall_starsim(..., envname = "r-reticulate")
+reinstall_starsim(..., envname = "r-starsim")
 }
 \description{
-Reinstalls Starsim into the current environment ("r-reticulate" by default)
+Reinstalls Starsim into the current environment ("r-starsim" by default).
+You can also use this function to install Starsim into your own environment.
 }
 \examples{
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

@@ -32,7 +32,7 @@ devtools::install_github("starsimhub/rstarsim")
 library(starsim)
 ```
 
-4. Finally, we install Starsim itself. This step will also install Python (specifically Miniconda) if needed, and will create a virtual environment (`r-reticulate`) unless it already exists. Note that this step may take some time (3-10 min depending on your computer and internet connection).
+4. Finally, we install Starsim itself. This step will also install Python (specifically Miniconda) if needed, and will create a virtual environment (`r-starsim`) unless it already exists. Note that this step may take some time (3-10 min depending on your computer and internet connection).
 ```{r, eval=FALSE}
 init_starsim()
 ```
