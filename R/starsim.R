@@ -11,18 +11,28 @@
 #' init_starsim()
 init_starsim <- function(..., envname = "r-starsim", required = FALSE) {
 
-  # Install Miniconda if not available (will skip if already installed)
-  reticulate::install_miniconda()
+  # Install Miniconda if not available
+  if (!dir.exists(reticulate::miniconda_path())) {
+    print('Miniconda not found, installing ...')
+    reticulate::install_miniconda()
+  } else {
+    print('Miniconda found, continuing ...')
+  }
 
   # Check that the environment exists, and create it if not
   if (!reticulate::condaenv_exists(envname)) {
+    print('Environment not found, installing ...')
     reticulate::conda_create(envname = envname, ...)
+  } else {
+    print('Environment found, continuing ...')
   }
 
   # Activate the environment
+  print('Activating environment...')
   reticulate::use_condaenv(envname, required = required)
 
   # Install Starsim
+  print('Installing Starsim ...')
   reticulate::py_install("starsim", envname = envname, pip = TRUE, ...)
 }
 .onLoad <- function(..., envname = "r-starsim", required = FALSE) { # Not sure if this is needed?
