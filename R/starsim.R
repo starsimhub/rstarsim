@@ -3,35 +3,42 @@
 #' Initialize Starsim
 #'
 #' Perform the steps needed to initialize Starsim: install Miniconda, create a virtual
-#' environment ("r-reticulate"), and install Starsim into it
+#' environment ("r-starsim"), and install Starsim into it
 #'
 #' @return NULL
 #' @export
 #' @examplesIf FALSE
 #' init_starsim()
-init_starsim <- function(..., envname = "r-reticulate", required = FALSE) {
-  if (!reticulate::py_available(initialize = TRUE)) {
-    print('Python not available, installing Miniconda ...')
-    reticulate::install_miniconda()
-  } else {
-    print('Python available, skipping Miniconda installation ...')
+init_starsim <- function(..., envname = "r-starsim", required = FALSE) {
+
+  # Install Miniconda if not available (will skip if already installed)
+  reticulate::install_miniconda()
+
+  # Check that the environment exists, and create it if not
+  if (!reticulate::condaenv_exists(envname)) {
+    reticulate::conda_create(envname = envname, ...)
   }
+
+  # Activate the environment
   reticulate::use_condaenv(envname, required = required)
+
+  # Install Starsim
   reticulate::py_install("starsim", envname = envname, pip = TRUE, ...)
 }
-.onLoad <- function(..., envname = "r-reticulate", required = FALSE) { # Not sure if this is needed?
+.onLoad <- function(..., envname = "r-starsim", required = FALSE) { # Not sure if this is needed?
   reticulate::use_condaenv(envname, required = required)
 }
 
 #' Reinstall Starsim
 #'
-#' Reinstalls Starsim into the current environment ("r-reticulate" by default)
+#' Reinstalls Starsim into the current environment ("r-starsim" by default).
+#' You can also use this function to install Starsim into your own environment.
 #'
 #' @return NULL
 #' @export
 #' @examplesIf FALSE
 #' reinstall_starsim()
-reinstall_starsim <- function(..., envname = "r-reticulate") {
+reinstall_starsim <- function(..., envname = "r-starsim") {
   reticulate::py_install(
     "starsim",
     envname = envname,
@@ -55,7 +62,7 @@ reinstall_starsim <- function(..., envname = "r-reticulate") {
 #' load_starsim()
 #' sim <- ss$Sim(diseases='sis', networks='random')
 #' sim$run()
-load_starsim <- function(envname = "r-reticulate", required = FALSE) {
+load_starsim <- function(envname = "r-starsim", required = FALSE) {
 
   # Set the virtual environment if an environment name is given
   if (!(isFALSE(envname)) && nzchar(envname)) {

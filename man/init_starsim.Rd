@@ -4,11 +4,11 @@
 \alias{init_starsim}
 \title{Initialize Starsim}
 \usage{
-init_starsim(..., envname = "r-reticulate", required = FALSE)
+init_starsim(..., envname = "r-starsim", required = FALSE)
 }
 \description{
 Perform the steps needed to initialize Starsim: install Miniconda, create a virtual
-environment ("r-reticulate"), and install Starsim into it
+environment ("r-starsim"), and install Starsim into it
 }
 \examples{
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

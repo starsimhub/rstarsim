@@ -14,7 +14,7 @@ library(starsim)
 init_starsim()
 ```
 
-If you do not already have a `reticulate` Python environment set up, R-Starsim will try to make one for you (by downloading Miniconda, creating an `r-reticulate` environment, and activating it).
+If you do not already have a `reticulate` Python environment set up, R-Starsim will try to make one for you (by downloading Miniconda, creating an `r-starsim` environment, and activating it).
 
 If you want to reinstall Starsim (e.g. to update the version), you can use:
 ```R
