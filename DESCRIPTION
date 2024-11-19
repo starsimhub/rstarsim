@@ -5,6 +5,7 @@ Authors@R: c(
     person("Cliff", "Kerr", , "cliff@starsim.org", role = c("aut", "cre")),
     person("Robyn", "Stuart", , "robyn@starsim.org", role = c("aut")),
     person("Romesh", "Abeysuriya", , "romesh.abeysuriya@burnet.edu.au", role = c("aut")),
+    person("Robert", "Hinch", , "robert.hinch@gmail.com", role = c("aut")),
     person("Daniel", "Klein", , "daniel.klein@gatesfoundation.org", role = c("aut"))
     )
 Description: Starsim is an open-source agent-based modeling framework for simulating the spread of diseases among agents via dynamic transmission networks.
