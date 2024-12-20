@@ -86,9 +86,6 @@ SEIR <- PyClass("SEIR",
       will_die <- self$pars['p_death']$rvs(uids) # Choose who will die
       self$ti_recovered[uids[!will_die]] <- ti + dur_inf[!will_die] # Schedule people to recover
       self$ti_dead[uids[will_die]] <- ti + dur_inf[will_die] # Schedule people to die
-
-      # Update result count of new infections
-      self$results['new_infections'][self$ti] = length(uids) # Store the number of new infections in the results
       return(py_none())
     },
 
