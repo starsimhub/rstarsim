@@ -143,3 +143,7 @@ ggplot(df, aes(timevec)) +
 ```
 <img src="simple-custom.png" alt="Custom ggplot" />
 
+### Next steps
+
+Ready for more? See the [Advanced usage](advanced.html) tutorial to learn how to create custom disease modules. If you're having trouble with plots, check the [Troubleshooting](troubleshooting.html) guide.
+

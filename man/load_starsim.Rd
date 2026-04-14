@@ -6,18 +6,44 @@
 \usage{
 load_starsim(envname = "r-starsim", required = FALSE)
 }
+\arguments{
+\item{envname}{Character. Name of the conda environment to activate, or
+\code{FALSE} to skip environment activation (e.g. if you have already
+activated an environment manually). Defaults to \code{"r-starsim"}.}
+
+\item{required}{Logical. If \code{TRUE}, an error is raised if the environment
+cannot be activated. Defaults to \code{FALSE}.}
+}
+\value{
+Called for its side effect of creating objects in the global
+environment (see Details). Returns \code{NULL} invisibly.
+}
 \description{
-Load all components of the Starsim environment, including: \code{ss} (all
-Starsim functionality); NumPy (\code{np}), pandas (\code{pd}), Sciris (\code{sc}), and
-Matplotlib (\code{plt}), for additional Python functionality; and some of
-the core Starsim classes (e.g. \code{Sim}, \code{Disease}). After installation,
-this is the only function that needs to be called from R-Starsim;
-everything else is accessed via \code{ss}.
+Load all components of the Starsim environment into the global namespace.
+After installation (via \code{\link{init_starsim}}), this is the only
+function that needs to be called from R-Starsim; everything else is
+accessed via \code{ss}.
+}
+\details{
+The following objects are created in the global environment:
+\itemize{
+\item \strong{Python libraries:} \code{ss} (Starsim), \code{sc} (Sciris),
+\code{np} (NumPy), \code{pd} (pandas), \code{plt} (Matplotlib), \code{os}
+\item \strong{Starsim class shortcuts:} \code{Sim}, \code{MultiSim},
+\code{Module}, \code{Demographics}, \code{Network}, \code{Connector},
+\code{Disease}, \code{Intervention}, \code{Analyzer}
+\item \strong{Reticulate helpers:} \code{import}, \code{py_none},
+\code{PyClass}
+}
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 load_starsim()
 sim <- ss$Sim(diseases='sis', networks='random')
 sim$run()
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{\link{init_starsim}} for first-time setup,
+\code{\link{reinstall_starsim}} to update Starsim.
 }
