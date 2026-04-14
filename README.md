@@ -1,6 +1,18 @@
 # R-Starsim
 
-[Starsim](https://starsim.org) is a framework for modeling the spread of diseases among agents via dynamic transmission networks. R-Starsim is a wrapper that facilitates the usage of Starsim from R. It uses [reticulate](https://rstudio.github.io/reticulate/index.html) to communicate between Python and R. Full documentation is available at https://r.starsim.org.
+[Starsim](https://starsim.org) is a framework for modeling the spread of diseases among agents via dynamic transmission networks. It can be used to evaluate intervention strategies, project disease burden, and explore transmission dynamics across a range of infectious diseases. R-Starsim is a wrapper that facilitates the usage of Starsim from R. It uses [reticulate](https://rstudio.github.io/reticulate/index.html) to communicate between Python and R. Full documentation is available at https://r.starsim.org.
+
+
+## Project structure
+
+| Folder | Description |
+|--------|-------------|
+| `R/` | Package source code (exported functions) |
+| `man/` | Auto-generated documentation (from roxygen2) |
+| `vignettes/` | Tutorials and guides (rendered on the docs site) |
+| `tests/` | Test suite (testthat) |
+| `examples/` | Standalone example scripts |
+| `docs/` | Built pkgdown site |
 
 
 ## Installation
@@ -65,6 +77,11 @@ sim$run()
 sim$diseases$sir$plot()
 ```
 <img src="man/figures/example-r.png" alt="SIR dynamics" />
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to set up a development environment, run tests, and submit pull requests.
+
 
 ## Contact
 

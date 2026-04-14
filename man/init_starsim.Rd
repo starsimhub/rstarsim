@@ -6,12 +6,32 @@
 \usage{
 init_starsim(..., envname = "r-starsim", required = FALSE)
 }
+\arguments{
+\item{...}{Additional arguments passed to \code{reticulate::conda_create()}
+and \code{reticulate::py_install()}.}
+
+\item{envname}{Character. Name of the conda environment to create and install
+Starsim into. Defaults to \code{"r-starsim"}.}
+
+\item{required}{Logical. If \code{TRUE}, an error is raised if the environment
+cannot be activated. Defaults to \code{FALSE}.}
+}
+\value{
+Called for its side effects (installs Miniconda, creates a conda
+environment, and installs Starsim). Returns \code{NULL} invisibly.
+}
 \description{
-Perform the steps needed to initialize Starsim: install Miniconda, create a virtual
-environment ("r-starsim"), and install Starsim into it
+Perform the steps needed to initialize Starsim: install Miniconda, create a
+conda virtual environment, and install Starsim into it. This only needs to be
+run once; after initialization, use \code{\link{load_starsim}} to load
+Starsim in each session.
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 init_starsim()
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{\link{load_starsim}} to load Starsim after initialization,
+\code{\link{reinstall_starsim}} to update or reinstall Starsim.
 }

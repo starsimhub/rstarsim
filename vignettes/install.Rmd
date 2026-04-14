@@ -43,3 +43,7 @@ load_starsim()
 ss$demo()
 ```
 <img src="install-demo.png" alt="Demo plot" />
+
+### Next steps
+
+Now that Starsim is installed, see the [Simple usage](simple.html) tutorial to create and run your first simulation. If you run into problems, check the [Troubleshooting](troubleshooting.html) guide.
