@@ -1,6 +1,6 @@
 Package: starsim
 Title: An R Interface to Starsim
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: c(
     person("Cliff", "Kerr", , "cliff@starsim.org", role = c("aut", "cre")),
     person("Robyn", "Stuart", , "robyn@starsim.org", role = c("aut")),
