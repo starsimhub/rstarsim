@@ -22,8 +22,8 @@ Config/reticulate:
       list(package = "starsim")
     )
   )
-Imports: 
-    reticulate
+Imports:
+    reticulate (>= 1.34)
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

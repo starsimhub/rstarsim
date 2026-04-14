@@ -7,9 +7,13 @@
 #'
 #' @return NULL
 #' @export
-#' @examplesIf FALSE
+#' @examplesIf interactive()
 #' init_starsim()
 init_starsim <- function(..., envname = "r-starsim", required = FALSE) {
+
+  if (!is.character(envname) || length(envname) != 1 || !nzchar(envname)) {
+    stop("'envname' must be a non-empty string (e.g., 'r-starsim')")
+  }
 
   # Install Miniconda if not available
   if (!dir.exists(reticulate::miniconda_path())) {
@@ -35,7 +39,7 @@ init_starsim <- function(..., envname = "r-starsim", required = FALSE) {
   print('Installing Starsim ...')
   reticulate::py_install("starsim", envname = envname, pip = TRUE, ...)
 }
-.onLoad <- function(..., envname = "r-starsim", required = FALSE) { # Not sure if this is needed?
+.onLoad <- function(..., envname = "r-starsim", required = FALSE) {
   reticulate::use_condaenv(envname, required = required)
 }
 
@@ -46,7 +50,7 @@ init_starsim <- function(..., envname = "r-starsim", required = FALSE) {
 #'
 #' @return NULL
 #' @export
-#' @examplesIf FALSE
+#' @examplesIf interactive()
 #' reinstall_starsim()
 reinstall_starsim <- function(..., envname = "r-starsim") {
   reticulate::py_install(
@@ -68,11 +72,15 @@ reinstall_starsim <- function(..., envname = "r-starsim") {
 #'
 #' @return NULL
 #' @export
-#' @examplesIf FALSE
+#' @examplesIf interactive()
 #' load_starsim()
 #' sim <- ss$Sim(diseases='sis', networks='random')
 #' sim$run()
 load_starsim <- function(envname = "r-starsim", required = FALSE) {
+
+  if (!isFALSE(envname) && (!is.character(envname) || length(envname) != 1 || !nzchar(envname))) {
+    stop("'envname' must be a non-empty string (e.g., 'r-starsim') or FALSE to skip environment activation")
+  }
 
   # Set the virtual environment if an environment name is given
   if (!(isFALSE(envname)) && nzchar(envname)) {

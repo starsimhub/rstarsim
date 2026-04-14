@@ -49,7 +49,6 @@ SEIR <- PyClass("SEIR",
 
     # Carry out state changes associated with infection
     set_prognoses = function(self, uids, sources = py_none()) {
-      print('HIIIIIII')
       uids <- ss$uids(uids)
       print(uids)
       ss$SIR$set_prognoses(self, uids, sources) # Perform SIR updates
