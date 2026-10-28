@@ -6,12 +6,26 @@
 \usage{
 reinstall_starsim(..., envname = "r-starsim")
 }
+\arguments{
+\item{...}{Additional arguments passed to \code{reticulate::py_install()}.}
+
+\item{envname}{Character. Name of the conda environment to install Starsim
+into. Defaults to \code{"r-starsim"}.}
+}
+\value{
+Called for its side effect (reinstalls the Starsim Python package).
+Returns \code{NULL} invisibly.
+}
 \description{
-Reinstalls Starsim into the current environment ("r-starsim" by default).
-You can also use this function to install Starsim into your own environment.
+Reinstalls Starsim into the specified conda environment. Use this to update
+Starsim to the latest version or to repair a broken installation.
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 reinstall_starsim()
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{\link{init_starsim}} for first-time setup,
+\code{\link{load_starsim}} to load Starsim after installation.
 }

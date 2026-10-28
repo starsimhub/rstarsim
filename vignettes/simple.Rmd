@@ -38,8 +38,10 @@ Here's what it looks like to configure a sim using a list of parameter values:
 ```{r, eval=FALSE}
 pars <- list(
   n_agents = 10000,
-  birth_rate = 20,
-  death_rate = 15,
+  demographics = list(
+    list(type = 'births', birth_rate = 20),
+    list(type = 'deaths', death_rate = 15)
+  ),
   networks = list(
     type = 'randomnet',
     n_contacts = 4
@@ -142,4 +144,8 @@ ggplot(df, aes(timevec)) +
   geom_line(aes(y = n_recovered, colour = "Recovered"))
 ```
 <img src="simple-custom.png" alt="Custom ggplot" />
+
+### Next steps
+
+Ready for more? See the [Advanced usage](advanced.html) tutorial to learn how to create custom disease modules. If you're having trouble with plots, check the [Troubleshooting](troubleshooting.html) guide.
 

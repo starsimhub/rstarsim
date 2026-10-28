@@ -6,14 +6,14 @@ load_starsim("r_star", required = TRUE)
 
 # Create a new class for an SEIR disease
 SEIR <- PyClass("SEIR", 
-  inherit = ss$SIR, # Inherit from the SIR class
+  inherit = ss$library$CodedSIR, # Inherit from the SIR written as code (Starsim 3's ss.SIR; in Starsim 4, ss$SIR is declared from states and transitions)
   defs = list(
     `__module__` = "SEIR",
     name = py_none(),
 
     # Define the __init__ method
     `__init__` = function(self, pars = py_none(), ...) {
-      ss$SIR$`__init__`(self) # Call the parent init method
+      ss$library$CodedSIR$`__init__`(self) # Call the parent init method
 
       # Parameters specific to SEIR: duration of exposure
       self$define_pars(
@@ -23,7 +23,7 @@ SEIR <- PyClass("SEIR",
 
       # Additional states beyond the SIR ones
       self$define_states(
-          ss$State('exposed', label='Exposed'),
+          ss$BoolState('exposed', label='Exposed'),
           ss$FloatArr('ti_exposed', label='TIme of exposure'),
       )
       py_none()
@@ -31,7 +31,7 @@ SEIR <- PyClass("SEIR",
 
     # Make all the updates from the SEIR model
     step_state = function(self) {
-        ss$SIR$step_state(self) # Perform SIR updates
+        ss$library$CodedSIR$step_state(self) # Perform SIR updates
 
         # Additional updates: progress exposed -> infected
         infected <- self$exposed & (self$ti_infected <= self$ti)
@@ -42,21 +42,21 @@ SEIR <- PyClass("SEIR",
 
     # Ensure that exposed is set to False for people who die
     step_die = function(self, uids) {
-      ss$SIR$step_die(self, uids) # Perform SIR updates
-      self$exposed[uids] = FALSE
+      uids <- import("starsim", convert = FALSE)$uids(as.integer(uids)) # Kept as a Python object: converted to R, they would be numbers, which do not index an array
+      ss$library$CodedSIR$step_die(self, uids) # Perform SIR updates
+      py_set_item(self$exposed, uids, FALSE)
       py_none()
     },
 
     # Carry out state changes associated with infection
     set_prognoses = function(self, uids, sources = py_none()) {
-      print('HIIIIIII')
-      uids <- ss$uids(uids)
+      uids <- import("starsim", convert = FALSE)$uids(as.integer(uids)) # Kept as a Python object: converted to R, they would be numbers, which do not index an array
       print(uids)
-      ss$SIR$set_prognoses(self, uids, sources) # Perform SIR updates
+      ss$library$CodedSIR$set_prognoses(self, uids, sources) # Perform SIR updates
       ti <- self$ti
-      self$susceptible[uids] = FALSE
-      self$exposed[uids] = TRUE
-      self$ti_exposed[uids] = ti
+      py_set_item(self$susceptible, uids, FALSE)
+      py_set_item(self$exposed, uids, TRUE)
+      py_set_item(self$ti_exposed, uids, ti)
 
       # Calculate and schedule future outcomes
       dur_exp <- self$pars['dur_exp']$rvs(uids)

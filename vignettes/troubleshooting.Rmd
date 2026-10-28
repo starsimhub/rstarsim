@@ -15,6 +15,8 @@ knitr::opts_chunk$set(
 
 ## Troubleshooting
 
+If you haven't installed Starsim yet, see the [Installation](install.html) guide first.
+
 ### Installation
 
 If `init_starsim()` fails, try creating your own Python environment (via `conda` or `miniconda`), installing Starsim manually, and then calling `load_starsim()` with an argument. For example, if your custom `conda` environment is called `r-starsim`, you would use:
