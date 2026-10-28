@@ -2,7 +2,7 @@
 title: "Installation"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_document
-editor_options: 
+editor_options:
   chunk_output_type: inline
 ---
 
@@ -13,37 +13,52 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Installing Starsim
+R-Starsim is an R package that runs Starsim, which is written in Python. Installing it takes two steps: the R package, then Starsim itself (and Python, if you don't already have it).
 
-Installing Starsim should be straightforward, whether or not you have Python or `reticulate` already configured on your computer.
-
-1. Install `devtools` if you haven't already:
+1. Install the R package, with `devtools` if you haven't already got it:
 ```{r, eval=FALSE}
 install.packages("devtools")
-```
-
-2. Install the R-Starsim package. This installs the R _wrapper_ for Starsim, but not Starsim itself yet.
-```{r, eval=FALSE}
 devtools::install_github("starsimhub/rstarsim")
 ```
 
-3. Load the wrapper:
+2. Install Starsim. This installs Python too if needed (specifically Miniconda), and creates a Python environment called `r-starsim` for Starsim. It may take a few minutes, depending on your computer and internet connection, but only needs to be done once.
 ```{r, eval=FALSE}
 library(starsim)
-```
-
-4. Finally, we install Starsim itself. This step will also install Python (specifically Miniconda) if needed, and will create a virtual environment (`r-starsim`) unless it already exists. Note that this step may take some time (3-10 min depending on your computer and internet connection).
-```{r, eval=FALSE}
 init_starsim()
 ```
 
-5. You can test the install with `ss$demo()`, which should run a sim and plot the results.
+3. Check that it works, by running Starsim's demo, which runs a sim, and plotting the results:
 ```{r, eval=FALSE}
-load_starsim()
-ss$demo()
+library(starsim)
+sim <- ss$demo(plot = FALSE)
+plot(sim)
 ```
-<img src="install-demo.png" alt="Demo plot" />
 
-### Next steps
+From now on, `library(starsim)` is all you need: Starsim is loaded the first time it is used.
 
-Now that Starsim is installed, see the [Simple usage](simple.html) tutorial to create and run your first simulation. If you run into problems, check the [Troubleshooting](troubleshooting.html) guide.
+
+## Updating Starsim
+
+To update Starsim to its latest version, use:
+```{r, eval=FALSE}
+reinstall_starsim()
+```
+
+To install a particular version, give it as pip would, e.g. `reinstall_starsim(package = "starsim==4.0.0")`. (To update R-Starsim itself, run `devtools::install_github("starsimhub/rstarsim")` again.)
+
+
+## Using your own Python
+
+If you already have Starsim installed in a Python environment of your own, skip `init_starsim()`, and say which environment to use before using Starsim, e.g. for a conda environment called `my_env`:
+```{r, eval=FALSE}
+library(starsim)
+load_starsim("my_env")
+#> Starsim 4.0.0 loaded from /home/me/miniconda3/envs/my_env/bin/python
+```
+
+For other kinds of environment (such as a virtual environment or a particular Python), use `reticulate` to choose it, e.g. `reticulate::use_virtualenv("~/my_venv")` or `reticulate::use_python("/usr/bin/python3")`, before using Starsim. Starsim needs Python 3.11 or later.
+
+
+## Next steps
+
+See [A first model](simple.html) to make and run your first model. If you run into problems, see [Troubleshooting](troubleshooting.html).

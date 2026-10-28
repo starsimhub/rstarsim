@@ -1,8 +1,8 @@
 ---
-title: "Troubleshooting"
+title: "Using Starsim from R, and troubleshooting"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_document
-editor_options: 
+editor_options:
   chunk_output_type: inline
 ---
 
@@ -13,21 +13,67 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Using Starsim from R
+
+Starsim's [documentation](https://docs.starsim.org) is written for Python, but every example in it can be written in R:
+
+| Python | R |
+|--------|---|
+| `import starsim as ss` | `library(starsim)` |
+| `ss.Sim(sir, stop=100)` | `Sim(sir, stop = 100)`, or `ss$Sim(sir, stop = 100)` |
+| `ss.SIR()` | `ss$SIR()` |
+| `sim.run()` | `sim$run()` |
+| `sim.results.sir.I` | `sim$results$sir$I` |
+| `S, I, R = ss.states('S I R')` | `states("S I R")` |
+| `S >> I @ 0.3*I` | `Transition(S, I, rate = 0.3 * I)` |
+| `dict(beta=0.3)` | `list(beta = 0.3)` |
+| `[0, 15, 65]` | `c(0, 15, 65)` |
+| `{0: 0.3, 15: 0.7}` | `list("0" = 0.3, "15" = 0.7)` |
+| `None`, `True`, `False` | `NULL`, `TRUE`, `FALSE` |
+| `**pars` | a function that makes the sim, e.g. `make_sim <- function(...) Sim(sir, stop = 100, ...)` |
+
+The commonly used functions (`Sim()`, `Disease()`, `Transition()`, `states()`, `par()`, `outcome()`, `contacts()`, `vaccinate()`, `modify()`, `parallel()`, `days()`, and `years()`) are R functions; everything else is in `ss`. If you name a variable of your own after one of them (e.g. `par`), the function is still there as `ss$par()`.
+
+`par()` is also R's own `par()`, for graphical parameters: given a value (`par(0.3)`) or one of Starsim's keywords (`par(value = 0.3)`) it makes a Starsim parameter, and given graphical parameters (`par(mfrow = c(1, 2))`) it calls `graphics::par()`.
+
+
+### Numbers
+
+R doesn't distinguish between whole numbers and others (`2` and `2.0` are the same), but Python does, and some of Starsim's arguments (such as `rand_seed`) need whole numbers. The functions above pass whole numbers as Python integers, as a Python user would type them. Methods (called with `$`, e.g. `sim$run(n_runs = 20)`) accept whole numbers for most arguments; if one gives an error such as `Cannot cast scalar from dtype('float64') to dtype('int64')`, give the number as an integer, e.g. `2L` rather than `2`.
+
+Likewise, named lists with numbers as names (`list("0" = 0.3, "15" = 0.7)`) become Python dicts with numbers as keys in the functions above, but not in methods. For a method, use `reticulate::py_dict(list(0, 15), list(0.3, 0.7))`, or give the same thing to a function instead, e.g. `Disease(..., stratify = list(age = list("0" = 0.3, "15" = 0.7)))` rather than `sir$stratify(...)`.
+
+
+### Results
+
+`as.data.frame()` gives a sim's or a multisim's results as a data frame, and `summary()` summarizes them. Results can also be used directly: e.g. `sim$results$sir$I$values` is the number of people infectious at each time point, as an R vector.
+
+
 ## Troubleshooting
 
-If you haven't installed Starsim yet, see the [Installation](install.html) guide first.
+If you haven't installed Starsim yet, see [Installation](install.html) first.
 
 ### Installation
 
-If `init_starsim()` fails, try creating your own Python environment (via `conda` or `miniconda`), installing Starsim manually, and then calling `load_starsim()` with an argument. For example, if your custom `conda` environment is called `r-starsim`, you would use:
+If `init_starsim()` fails, try creating your own Python environment (e.g. with `conda` or `uv`), installing Starsim into it with `pip install starsim`, and then telling R-Starsim to use it, e.g. for a conda environment called `my_env`:
 ```R
 library(starsim)
-load_starsim("r-starsim")
+load_starsim("my_env")
+```
+
+To see which Python R-Starsim is using, run `reticulate::py_config()`.
+
+### Loading Starsim
+
+R and Python sometimes come with different versions of the same system library, and whichever is loaded first is used by both. If loading Starsim gives an error that mentions a library's version, such as `zstd C API versions mismatch` or `GLIBCXX_3.4.30 not found`, start R with Python's version of that library loaded first, e.g. (on Linux, with a conda environment called `r-starsim`):
+```sh
+LD_PRELOAD=~/miniconda3/envs/r-starsim/lib/libzstd.so.1 R
 ```
 
 ### Plotting
 
-- If plots don't appear, try `plt$show()` after calling `plot()`, or set `ss$options(reticulate=True)` before plotting.
-- If the plots don't appear _and_ they cause RStudio to crash, either set the backend to Agg (Tools > General Options > General > Graphics > Backend), or call `X11()` somewhere in your script before calling `plot()`.
-- If plots appear but the scaling is wrong (e.g. the text is colliding), you can either (a) zoom out in RStudio (this changes the inferred scaling factor), or (b) change the default font size with e.g. `sc$options(fontsize=6)` (note s**c** = Sciris rather than s**s** = Starsim).
-- If all else fails, plotting seems to work better from VS Code than RStudio.
+Plots are drawn on R's current graphics device, so they appear wherever R's own plots do (the RStudio plots pane, a window, R Markdown, or `Rplots.pdf` when running a script with `Rscript`).
+
+- If a plot doesn't appear inside a function or a loop, print it: `print(sim$plot())`, or use `plot(sim)`, as for a ggplot.
+- A plot is drawn at the size of the plotting area when it is made; to redraw it at a new size, plot it again.
+- To change the size of the text, change Matplotlib's default font size with e.g. `sc <- reticulate::import("sciris"); sc$options(fontsize = 8)`.

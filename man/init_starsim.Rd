@@ -2,29 +2,37 @@
 % Please edit documentation in R/starsim.R
 \name{init_starsim}
 \alias{init_starsim}
-\title{Initialize Starsim}
+\title{Install Starsim}
 \usage{
-init_starsim(..., envname = "r-starsim", required = FALSE)
+init_starsim(
+  ...,
+  envname = "r-starsim",
+  required = FALSE,
+  package = "starsim",
+  python_version = "3.12"
+)
 }
 \arguments{
-\item{...}{Additional arguments passed to \code{reticulate::conda_create()}
-and \code{reticulate::py_install()}.}
+\item{...}{Passed to \code{reticulate::py_install()}.}
 
-\item{envname}{Character. Name of the conda environment to create and install
-Starsim into. Defaults to \code{"r-starsim"}.}
+\item{envname}{Character. The conda environment to create and install
+Starsim into.}
 
-\item{required}{Logical. If \code{TRUE}, an error is raised if the environment
-cannot be activated. Defaults to \code{FALSE}.}
+\item{required}{Logical. Whether to raise an error if the environment
+cannot be activated.}
+
+\item{package}{Character. What to install, as given to pip: e.g.
+\code{"starsim==4.0.0"} for a particular version, or a Git URL.}
+
+\item{python_version}{Character. The version of Python for a new environment.}
 }
 \value{
-Called for its side effects (installs Miniconda, creates a conda
-environment, and installs Starsim). Returns \code{NULL} invisibly.
+\code{NULL}, invisibly; called to install Starsim.
 }
 \description{
-Perform the steps needed to initialize Starsim: install Miniconda, create a
-conda virtual environment, and install Starsim into it. This only needs to be
-run once; after initialization, use \code{\link{load_starsim}} to load
-Starsim in each session.
+Installs Starsim, with Python if needed: installs Miniconda (if it is not
+there), creates a conda environment, and installs Starsim into it. This only
+needs to be run once; after that, \code{library(starsim)} is all that's needed.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
@@ -32,6 +40,6 @@ init_starsim()
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{load_starsim}} to load Starsim after initialization,
-\code{\link{reinstall_starsim}} to update or reinstall Starsim.
+\code{\link{load_starsim}} to use another environment,
+\code{\link{reinstall_starsim}} to update Starsim.
 }

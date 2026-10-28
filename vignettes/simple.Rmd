@@ -1,8 +1,8 @@
 ---
-title: "Simple usage"
+title: "A first model"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_document
-editor_options: 
+editor_options:
   chunk_output_type: inline
 ---
 
@@ -13,139 +13,108 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Simple usage example
-
-This example walks through the steps for creating and running a simple Starsim simulation. Here, "simple" means that you are configuring (i.e., setting the parameters for) existing Starsim modules, rather than writing new ones.
+This tutorial builds a simple epidemic model, runs it, and looks at its results. If you haven't installed Starsim yet, see [Installation](install.html) first.
 
 
-### Load Starsim
+## An SIR model
 
-The `starsim` package only contains three functions -- `init_starsim()`, `reinstall_starsim()`, and `load_starsim()`. The first one you should only need to do once, the second one you might not need to do at all, and the third one is how you access all of Starsim's functionality:
+In an SIR model, everyone is in one of three compartments: susceptible (S), infectious (I), or recovered (R). People move between them along two transitions:
+
+- **Infection**, from S to I. Each susceptible person is infected at a rate of β times the share of people who are infectious, so the number infected per day is β S I / N.
+- **Recovery**, from I to R. People stay infectious for 10 days on average, so they recover at a rate of 1/10 per day.
+
+In Starsim, the compartments are *states*, and each *transition* says where people move from, where they move to, and how fast:
+
 ```{r, eval=FALSE}
 library(starsim)
-load_starsim()
-```
 
-For the most "Pythonic" experience, you can do everything via the `ss` variable, which corresponds to `import starsim as ss` in Python. However, for a more "R-ish" experience, you can also use some of the most important classes directly, all of which can also be accessed via `ss`. For example, `sim <- ss$Sim()` and `sim <- Sim()` are identical.
-
-For ease of use, Starsim also imports several key `reticulate` functions, including `import` and `PyClass`.
-
-### Configure a Starsim run
-
-Starsim simulations can be configured either by supplying a list of *parameter values*, or a list of *objects*. These two approaches are equivalent. For simple sims, it's usually easiest to use parameter values. For more complex sims, it's usually easiest to use objects.
-
-Here's what it looks like to configure a sim using a list of parameter values:
-```{r, eval=FALSE}
-pars <- list(
-  n_agents = 10000,
-  demographics = list(
-    list(type = 'births', birth_rate = 20),
-    list(type = 'deaths', death_rate = 15)
-  ),
-  networks = list(
-    type = 'randomnet',
-    n_contacts = 4
-  ),
-  diseases = list(
-    type = 'sir',
-    dur_inf = 10,
-    beta = 0.1
-  )
+states("S I R") # Makes the states S, I and R
+sir <- Disease(
+  infection = Transition(S, I, rate = 0.3 * I),       # From S to I, at a rate of 0.3 times the share infectious
+  recovery  = Transition(I, R, dur = days(10))        # From I to R, after 10 days on average
 )
 ```
 
-Here's the identical simulation, but configured using objects:
+A state in a rate, like `I` in `0.3 * I`, is the share of people in it. A duration, like `days(10)`, is the average time spent in a state before leaving it. Since the duration is in days, β = 0.3 is per day, and the basic reproduction number is R0 = β × the duration = 0.3 × 10 = 3. To see the model as equations:
+
 ```{r, eval=FALSE}
-n_agents <- 10000
-births <- ss$Births(birth_rate=20)
-deaths <- ss$Deaths(death_rate=15)
-random <- ss$RandomNet(n_contacts=4)
-sir <- ss$SIR(dur_inf=10, beta=0.1)
+sir$equations()
+#> dS/dt = -beta * S * I / N
+#> dI/dt =  beta * S * I / N - I / dur
+#> dR/dt =  I / dur
 ```
 
 
-### Create and run a sim
+## Running it
 
-To create a sim using parameters, we can simply supply that as an argument:
-```{r, eval=FALSE}
-sim <- Sim(pars)
-```
+To run the model, give it to a sim, with how long to run for:
 
-Any valid parameter name (e.g. `networks`) can also be supplied directly to a sim. So our "object sim" would look like this:
 ```{r, eval=FALSE}
-sim2 <- Sim(
-  label = 'Objects',
-  n_agents = n_agents,
-  demographics = c(births, deaths),
-  networks = random,
-  diseases = sir
-)
-```
-
-Now, let's run both sims and confirm that they match:
-```{r, eval=FALSE}
+sim <- Sim(sir, stop = days(100))
 sim$run()
-sim2$run()
-
-#> Initializing sim with 10000 agents
-#>   Running 2000.0 ( 0/51) (0.00 s)  ———————————————————— 2%
-#>   Running 2010.0 (10/51) (0.08 s)  ••••———————————————— 22%
-#>   Running 2020.0 (20/51) (0.17 s)  ••••••••———————————— 41%
-#>   Running 2030.0 (30/51) (0.24 s)  ••••••••••••———————— 61%
-#>   Running 2040.0 (40/51) (0.31 s)  ••••••••••••••••———— 80%
-#>   Running 2050.0 (50/51) (0.39 s)  •••••••••••••••••••• 100%
-#> Sim(n=10000; 2000—2050; networks=randomnet; demographics=births, deaths; diseases=sir)
-#> 
-#> Initializing sim "Objects" with 10000 agents
-#>   Running "Objects": 2000.0 ( 0/51) (0.00 s)  ———————————————————— 2%
-#>   Running "Objects": 2010.0 (10/51) (0.07 s)  ••••———————————————— 22%
-#>   Running "Objects": 2020.0 (20/51) (0.15 s)  ••••••••———————————— 41%
-#>   Running "Objects": 2030.0 (30/51) (0.23 s)  ••••••••••••———————— 61%
-#>   Running "Objects": 2040.0 (40/51) (0.30 s)  ••••••••••••••••———— 80%
-#>   Running "Objects": 2050.0 (50/51) (0.38 s)  •••••••••••••••••••• 100%
-#> Sim(Objects; n=10000; 2000—2050; networks=randomnet; demographics=births, deaths; diseases=sir)
-```
-
-Let's check that the results of the two sims match:
-```{r, eval=FALSE}
-ss$check_sims_match(sim, sim2)
-#> Sims match
-```
-
-
-### Built-in plotting
-
-To plot all the results in a sim, we can call `sim$plot()`:
-```{r, eval=FALSE}
+#> Sim: sir, 10,000 people, as an ODE, days 0 to 100
+#>   sir: R0 = 3, with 100 infectious at the start
+#>   Done in 0.0013 s; sir: 9,309 infections; at most 3,036 infectious, on day 27
 sim$plot()
 ```
-<img src="simple-sim.png" alt="Sim plot" />
+<img src="simple-sim.png" alt="SIR epidemic" />
 
-(If your plot doesn't show up or looks stupendously ugly, please see the article on troubleshooting.)
+The sim says what it ran and what happened: 10,000 people (the default population) as an ODE, R0 = 3 as expected, and the size and timing of the peak. By default, 1% of people start infectious; to change this, give the disease `init_prev`, e.g. `init_prev = 0.001` for 0.1%.
 
-To plot just the results from our disease module, we can call `plot()` for that disease:
+`sim$plot()` and `plot(sim)` both plot the results. (At the top level of a script, a plot is shown when it is made; inside a function or loop, use `plot(sim)`, or `print(sim$plot())`, as for a ggplot.)
+
+
+## Results as a data frame
+
+`as.data.frame()` gives every result, one row per day, with a column for each state and transition:
+
 ```{r, eval=FALSE}
-sim$diseases$sir$plot()
+df <- as.data.frame(sim)
+head(df[, 1:6])
+#>   time    sir_S    sir_I    sir_R sir_infection sir_recovery
+#> 1    0 9900.000 100.0000  0.00000       0.00000      0.00000
+#> 2    1 9867.233 121.7162 11.05107      32.76731     11.05107
+#> ...
 ```
-<img src="simple-sir.png" alt="SIR plot" />
 
-
-### Custom plotting
-
-Eventually, you are going to want to do some custom plotting. The easiest way to do this is to export your results to a dataframe, and then plot as you usually would. For example:
+so you can plot them however you like, e.g. with ggplot2:
 
 ```{r, eval=FALSE}
 library(ggplot2)
-df <- sim$results$sir$to_df()
-
-ggplot(df, aes(timevec)) + 
-  geom_line(aes(y = n_susceptible, colour = "Susceptible")) + 
-  geom_line(aes(y = n_infected, colour = "Infected")) +
-  geom_line(aes(y = n_recovered, colour = "Recovered"))
+ggplot(df, aes(time)) +
+  geom_line(aes(y = sir_S, colour = "Susceptible")) +
+  geom_line(aes(y = sir_I, colour = "Infectious")) +
+  geom_line(aes(y = sir_R, colour = "Recovered")) +
+  labs(x = "Day", y = "People", colour = NULL)
 ```
-<img src="simple-custom.png" alt="Custom ggplot" />
+<img src="simple-custom.png" alt="SIR epidemic, plotted with ggplot2" />
 
-### Next steps
 
-Ready for more? See the [Advanced usage](advanced.html) tutorial to learn how to create custom disease modules. If you're having trouble with plots, check the [Troubleshooting](troubleshooting.html) guide.
+## Many runs
 
+The ODE gives one answer: the epidemic as expected on average. A real epidemic varies by chance from one outbreak to the next. To see this, run the same model as a stochastic model, in which the number of people who move between states each day is random, and run it many times. `solver = "binomial"` runs it this way, and `n_runs = 20` runs it 20 times, each with its own random seed:
+
+```{r, eval=FALSE}
+msim <- sim$run(solver = "binomial", n_runs = 20)
+msim$plot()
+```
+<img src="simple-msim.png" alt="SIR epidemic over 20 stochastic runs" />
+
+The plot shows the median of the runs, and the range that holds 95% of them. `summary()` gives the same for each result over the whole run (the total of a transition, such as infections, and the final value of a state):
+
+```{r, eval=FALSE}
+summary(msim)
+#>          result median     low     high    mean      std
+#> 1         sir_S  544.5  482.95  610.050  541.05 37.30479
+#> 2         sir_I   13.5    6.95   22.525   14.20  4.43396
+#> 3         sir_R 9443.0 9377.95 9503.350 9444.75 35.92057
+#> 4 sir_infection 9355.5 9289.95 9417.050 9358.95 37.30479
+#> 5  sir_recovery 9443.0 9377.95 9503.350 9444.75 35.92057
+```
+
+The model can also be run with one agent per person (`solver = "abm"`), which is what a model needs when people differ in ways that compartments can't hold, such as their contacts in a network.
+
+
+## Next steps
+
+[Age groups, interventions, and fitting](advanced.html) builds on this model. For everything else Starsim can do, see the [Starsim documentation](https://docs.starsim.org): its examples are in Python, but each translates directly to R (see [Using Starsim from R](troubleshooting.html#using-starsim-from-r)).

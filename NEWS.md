@@ -3,9 +3,14 @@
 
 ## Version 2.0.0 (in development, for Starsim 4)
 
-* `transition()` and `disease()` declare a Starsim 4 model in R, with arrow strings and rates as formulas (`transition("S -> I", rate = ~ beta * I$frac)`); `results_df()` gives a sim's results as a data frame.
-* The advanced vignette builds on `ss$library$CodedSIR` (Starsim 3's `ss.SIR`; in Starsim 4, `ss$SIR` is declared) and `ss$BoolState`, and keeps UIDs as Python objects, so that it runs; an example of a model declared in R (`examples/declared.R`, and the README).
-* The simple vignette and `examples/example.R` give births and deaths as `demographics = list(...)`, since Starsim 4 has no `birth_rate=` or `death_rate=` on the sim.
+* R-Starsim now uses Starsim 4, in which a model is written as its states and the transitions between them, and runs as an ODE, a stochastic model, or with agents.
+* `library(starsim)` is all that's needed: Starsim is loaded the first time it is used, and `load_starsim()` is only needed to choose a Python environment. It no longer puts `ss`, `sc`, `np`, `pd`, `plt`, `os`, Starsim's classes, or `reticulate`'s functions in the global environment: `ss` is part of the package, and the others can be imported with `reticulate::import()`.
+* The most commonly used parts of Starsim are R functions: `Sim()`, `MultiSim()`, `parallel()`, `Disease()`, `Transition()`, `outcome()`, `par()`, `contacts()`, `vaccinate()`, `modify()`, `days()`, and `years()`. They pass whole numbers to Python as integers, and named lists with numbers as names as dicts with numbers as keys. `par()` is also `graphics::par()` when given graphical parameters.
+* `states("S I R")` makes the states S, I and R, and puts them in scope.
+* `plot()` plots sims, multisims, fits and results on R's graphics device, so plots appear in the console, RStudio, and R Markdown alike, and figures from `sim$plot()` and the like appear when printed.
+* `as.data.frame()` gives the results of a sim or multisim as a data frame, and `summary()` summarizes them; dates are `Date`s.
+* `init_starsim()` and `reinstall_starsim()` take `package`, to install a particular version of Starsim.
+* The vignettes are rewritten for Starsim 4: a first model, then age groups, interventions, and fitting.
 
 
 ## Version 1.1.0 (2026-04-14)

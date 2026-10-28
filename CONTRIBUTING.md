@@ -33,9 +33,12 @@ devtools::test()
 ```
 
 
+Most tests need Starsim (in Python), and are skipped if it isn't installed. The vignettes aren't run when the site is built; to check that their code runs and to update their figures, run `vignettes/make_figures.R` from the `vignettes` folder.
+
+
 ## Building documentation
 
-Roxygen2 docstrings are used to generate man pages. After editing docstrings in `R/starsim.R`, regenerate the man pages with:
+Roxygen2 docstrings are used to generate man pages. After editing docstrings in `R/`, regenerate the man pages with:
 
 ```R
 devtools::document()

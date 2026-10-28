@@ -1,6 +1,6 @@
 Package: starsim
 Title: An R Interface to Starsim
-Version: 1.1.0
+Version: 2.0.0
 Authors@R: c(
     person("Cliff", "Kerr", , "cliff@starsim.org", role = c("aut", "cre")),
     person("Robyn", "Stuart", , "robyn@starsim.org", role = c("aut")),
@@ -8,14 +8,13 @@ Authors@R: c(
     person("Robert", "Hinch", , "robert.hinch@gmail.com", role = c("aut")),
     person("Daniel", "Klein", , "daniel.klein@gatesfoundation.org", role = c("aut"))
     )
-Description: Starsim is an open-source agent-based modeling framework for simulating the spread of diseases among agents via dynamic transmission networks.
+Description: Starsim is a fast, flexible disease modeling framework, which runs the same model as a compartmental (ODE), stochastic, or agent-based model. This package makes Starsim available in R.
 URL: https://r.starsim.org/
 BugReports: https://github.com/starsimhub/rstarsim/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
-SystemRequirements: Python (>= 3.9.0)
+SystemRequirements: Python (>= 3.11)
 Config/reticulate:
   list(
     packages = list(
@@ -23,7 +22,14 @@ Config/reticulate:
     )
   )
 Imports:
-    reticulate (>= 1.34)
+    graphics,
+    grDevices,
+    grid,
+    png,
+    reticulate (>= 1.34),
+    stats,
+    utils
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0

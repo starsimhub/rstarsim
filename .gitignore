@@ -1,3 +1,7 @@
+# Custom
+*.png
+!man/figures/*.png
+
 # History files
 .Rhistory
 .Rapp.history

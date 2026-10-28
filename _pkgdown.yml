@@ -3,6 +3,23 @@ url: https://r.starsim.org
 template:
   bootstrap: 5
 
+reference:
+- title: Models and sims
+  contents:
+  - starsim-functions
+  - states
+  - ss
+- title: Results
+  contents:
+  - plot.starsim
+  - as.data.frame.starsim
+  - summary.starsim
+- title: Installation
+  contents:
+  - init_starsim
+  - reinstall_starsim
+  - load_starsim
+
 articles:
 - title: Vignettes
   navbar: Vignettes

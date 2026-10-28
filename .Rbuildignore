@@ -4,3 +4,10 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+^examples$
+^sandbox$
+^engineering_score\.md$
+^docs_audit\.md$
+^CODE_OF_CONDUCT\.md$
+^CONTRIBUTING\.md$
+^vignettes/make_figures\.R$

@@ -7,43 +7,28 @@
 load_starsim(envname = "r-starsim", required = FALSE)
 }
 \arguments{
-\item{envname}{Character. Name of the conda environment to activate, or
-\code{FALSE} to skip environment activation (e.g. if you have already
-activated an environment manually). Defaults to \code{"r-starsim"}.}
+\item{envname}{Character. The conda environment to use, or \code{FALSE} to
+use the Python that \code{reticulate} has already chosen.}
 
-\item{required}{Logical. If \code{TRUE}, an error is raised if the environment
-cannot be activated. Defaults to \code{FALSE}.}
+\item{required}{Logical. Whether to raise an error if the environment
+cannot be activated.}
 }
 \value{
-Called for its side effect of creating objects in the global
-environment (see Details). Returns \code{NULL} invisibly.
+The version of Starsim, invisibly.
 }
 \description{
-Load all components of the Starsim environment into the global namespace.
-After installation (via \code{\link{init_starsim}}), this is the only
-function that needs to be called from R-Starsim; everything else is
-accessed via \code{ss}.
-}
-\details{
-The following objects are created in the global environment:
-\itemize{
-\item \strong{Python libraries:} \code{ss} (Starsim), \code{sc} (Sciris),
-\code{np} (NumPy), \code{pd} (pandas), \code{plt} (Matplotlib), \code{os}
-\item \strong{Starsim class shortcuts:} \code{Sim}, \code{MultiSim},
-\code{Module}, \code{Demographics}, \code{Network}, \code{Connector},
-\code{Disease}, \code{Intervention}, \code{Analyzer}
-\item \strong{Reticulate helpers:} \code{import}, \code{py_none},
-\code{PyClass}
-}
+Loads Starsim from the given Python environment, and says which version it
+is. This is optional: Starsim is loaded the first time it is used, from the
+environment made by \code{\link{init_starsim}} if there is one, or else
+from the Python that \code{reticulate} would use. Call this first to use
+another environment, or to check that Starsim loads.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 load_starsim()
-sim <- ss$Sim(diseases='sis', networks='random')
-sim$run()
+load_starsim("my_env")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{init_starsim}} for first-time setup,
-\code{\link{reinstall_starsim}} to update Starsim.
+\code{\link{init_starsim}} to install Starsim.
 }

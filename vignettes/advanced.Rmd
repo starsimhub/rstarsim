@@ -1,8 +1,8 @@
 ---
-title: "Advanced usage"
+title: "Age groups, interventions, and fitting"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_document
-editor_options: 
+editor_options:
   chunk_output_type: inline
 ---
 
@@ -13,112 +13,107 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Advanced usage example
+This tutorial extends the SIR model of [A first model](simple.html) with age groups and contacts between them, compares two interventions, and fits the model to data.
 
-This example illustrates how to creating a custom disease module. It is a translation of Starsim's [Diseases developer tutorial](https://docs.starsim.org/tutorials/dev_tut_diseases.html) to R.
 
-To recap that tutorial, the main customizations we are performing here are:
+## Age groups and contacts
 
-#. In `__init__()` we added the extra pars and states needed for our model.
-#. We defined infectious to include both infected and exposed people - this means that we can just reuse the existing logic for how the SIR model handles transmission.
-#. We updated `step_state()` and `step_die()` to include changes to the exposed state.
-#. We rewrote `set_prognoses()` to include the new exposed state.
+Most respiratory infections spread differently between age groups. `stratify` splits each state by age: here into three groups, with the share of the population in each. `contacts()` says how much each group mixes with each other one: a contact matrix, in which row *i*, column *j* is the number of contacts a day that a person in group *i* has with people in group *j*. With contacts, β is the chance of infection per contact. This model also has an *outcome*, `cases`: the infections that are reported, here one in five.
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 library(starsim)
-load_starsim()
 
-# Create a new class for an SEIR disease
-SEIR <- PyClass("SEIR", 
-  inherit = ss$library$CodedSIR, # Inherit from the SIR written as code (Starsim 3's ss.SIR; in Starsim 4, ss$SIR is declared from states and transitions)
-  defs = list(`__module__` = "SEIR",
+states("S I R")
+beta <- par(0.02, bounds = c(0.005, 0.1)) # A parameter that can be fitted, between these bounds
 
-    # Define the __init__ method
-    `__init__` = function(self, pars = py_none(), ...) {
-      ss$library$CodedSIR$`__init__`(self) # Call the parent init method
-
-      # Parameters specific to SEIR: duration of exposure
-      self$define_pars(
-          dur_exp = ss$lognorm_ex(0.5), # Define an explicit ("ex") lognormal distribution with a mean of 0.5
-      )
-      self$update_pars(pars, ...)
-
-      # Additional states beyond the SIR ones
-      self$define_states(
-          ss$BoolState('exposed', label='Exposed'),
-          ss$FloatArr('ti_exposed', label='TIme of exposure'),
-      )
-      return(py_none())
-    },
-
-    # Make all the updates from the SEIR model
-    step_state = function(self) {
-        ss$library$CodedSIR$step_state(self) # Perform SIR updates
-
-        # Additional updates: progress exposed -> infected
-        infected <- self$exposed & (self$ti_infected <= self$ti) # Check who is scheduled to become infected
-        self$exposed[infected] = FALSE
-        self$infected[infected] = TRUE
-        return(py_none())
-    },
-
-    # Ensure that exposed is set to False for people who die
-    step_die = function(self, uids) {
-      uids <- import("starsim", convert = FALSE)$uids(as.integer(uids)) # Kept as a Python object: converted to R, they would be numbers, which do not index an array
-      ss$library$CodedSIR$step_die(self, uids) # Perform SIR updates
-      py_set_item(self$exposed, uids, FALSE)
-      return(py_none())
-    },
-
-    # Carry out state changes associated with infection
-    set_prognoses = function(self, uids, sources = py_none()) {
-      ss$library$CodedSIR$set_prognoses(self, uids, sources) # Perform SIR updates
-      
-      # Define handling of exposure
-      ti <- self$ti # Current module time index
-      py_set_item(self$susceptible, uids, FALSE # People exposed are no longer susceptible)
-      py_set_item(self$exposed, uids, TRUE # But they are exposed)
-      py_set_item(self$ti_exposed, uids, ti # Track what time they got infected)
-
-      # Calculate and schedule future outcomes
-      dur_exp <- self$pars['dur_exp']$rvs(uids) # Get random numbers for the duration of exposure
-      self$ti_infected[uids] <- ti + dur_exp # Set the time at which people move from exposed to infected
-      dur_inf <- self$pars['dur_inf']$rvs(uids) # Set the duration of infection
-      will_die <- self$pars['p_death']$rvs(uids) # Choose who will die
-      self$ti_recovered[uids[!will_die]] <- ti + dur_inf[!will_die] # Schedule people to recover
-      self$ti_dead[uids[will_die]] <- ti + dur_inf[will_die] # Schedule people to die
-
-      # Update result count of new infections
-      self$results['new_infections'][self$ti] = length(uids) # Store the number of new infections in the results
-      return(py_none())
-    },
-
-    # Plot results using ggplot
-    plot = function(self) {
-      library(ggplot2)
-      df <- self$results$to_df() # Export results to an R data.frame
-
-      fig <- ggplot(df, aes(timevec)) + 
-        geom_line(aes(y = n_susceptible, colour = "Susceptible")) + 
-        geom_line(aes(y = n_exposed, colour = "Exposed")) +
-        geom_line(aes(y = n_infected, colour = "Infected")) +
-        geom_line(aes(y = n_recovered, colour = "Recovered"))
-      
-      print(fig)
-      return(fig)
-    }
-  )
+infection <- Transition(S, I, rate = beta * I)
+sir <- Disease(
+  infection = infection,
+  recovery  = Transition(I, R, dur = days(10)),
+  cases     = outcome(0.2 * infection), # One infection in five is reported
+  init_prev = 0.0001,
+  stratify  = list(age = list("0" = 0.3, "15" = 0.6, "65" = 0.1)) # Ages 0-14, 15-64, and 65+, with the share of people in each
 )
 
-# Run and plot
-seir <- SEIR() # Create the disease module
-sim <- ss$Sim(diseases=seir, networks='random') # Create a simple sim with default parameters
-sim$run() # Run
-sim$diseases$seir$plot() # Call the custom ggplot function
+matrix <- rbind(
+  c(10, 6, 1),
+  c( 3, 8, 1),
+  c( 3, 6, 3)
+)
+make_sim <- function(...) {
+  Sim(sir, networks = contacts(ages = c(0, 15, 65), matrix = matrix),
+      total_pop = 1e6, start = "2025-01-01", stop = "2025-07-01", ...)
+}
+sim <- make_sim()
+sim$run()
+sim$results$sir$I$by("age")$plot()
 ```
-<img src="advanced-seir.png" alt="Custom SEIR module" />
+<img src="advanced-age.png" alt="Infectious people by age group" />
+
+Every state and transition has a result of the same name (`S`, `I`, `R`, `infection`, `recovery`), and so does each outcome (`cases`). `by("age")` splits a result by age group.
+
+`make_sim()` makes a sim with these settings, plus any others it is given, so that every sim below uses the same ones: e.g. `make_sim(interventions = masks)`.
 
 
-### Next steps
+## Interventions
 
-For more intermediate examples between the simple example (which is very simple) and this one (which is very advanced), please see the [Starsim documentation](https://docs.starsim.org). If you still have questions, please [reach out to us](mailto:info@starsim.org) -- we're very happy to help!
+An intervention changes the course of the epidemic from some point on. Here are two: vaccinating 80% of people aged 65 and over on 1 February, with a vaccine that cuts their chance of infection by 90%, and masks, which cut transmission by 40% from the same day:
+
+```{r, eval=FALSE}
+vaccine <- vaccinate(efficacy = 0.9, where = sir$age >= 65, coverage = 0.8, at = "2025-02-01")
+masks <- modify(sir$pars$beta, multiply = 0.6, start = "2025-02-01")
+```
+
+To compare them, make a sim for each scenario, and run them together with `parallel()`:
+
+```{r, eval=FALSE}
+scenarios <- list("No intervention" = NULL, "Vaccine" = vaccine, "Masks" = masks)
+sims <- lapply(scenarios, function(intervention) make_sim(interventions = intervention))
+msim <- parallel(sims)
+msim$plot()
+```
+<img src="advanced-scenarios.png" alt="The three scenarios" />
+
+`summary()` gives each result over the whole run for each scenario, as a data frame:
+
+```{r, eval=FALSE}
+s <- summary(msim)
+s[s$result == "sir_infection", ]
+```
+
+
+## Data and fitting
+
+A model is fitted by finding the values of its parameters that make its results match data. To try this where the right answer is known, make data from the model itself: run it with β = 0.025, and draw weekly counts of cases from it, with random noise as in real reporting. The noise is drawn with the true sim's own random seed (`rand_seed = 2`), since the noise in real data has nothing to do with the model's.
+
+```{r, eval=FALSE}
+truth <- make_sim(pars = list(beta = 0.025), rand_seed = 2)
+truth$run()
+data <- truth$to_data("cases", resample = "week")
+head(data)
+```
+
+Data is matched to results by name: the column `cases` is compared with the result `cases`, and since the data is weekly, each row is compared with the total of the model's cases over its week. Data of your own can be any data frame with a `date` column and a column for each result. `sim$fit()` then fits every parameter that has bounds (here, β) to every result that has data:
+
+```{r, eval=FALSE}
+sim <- make_sim(data = data)
+fit <- sim$fit()
+fit$plot()
+fit$pars$beta
+#> [1] 0.02499076
+```
+<img src="advanced-fit.png" alt="The model before and after fitting, against the data" />
+
+The plot shows the model's cases with the starting value of β (before) and the fitted one (after), against the data. The fitted β is close to the 0.025 the data was made with.
+
+To see the uncertainty in the fitted model, run it many times as a stochastic model, as in [A first model](simple.html#many-runs):
+
+```{r, eval=FALSE}
+msim <- fit$sim$run(solver = "binomial", n_runs = 20)
+msim$plot()
+```
+
+
+## Next steps
+
+The [Starsim documentation](https://docs.starsim.org) covers the rest of Starsim, including networks, demographics, and modules written as code. Its examples are in Python, but each translates directly to R (see [Using Starsim from R](troubleshooting.html#using-starsim-from-r)). If you have questions, please [reach out to us](mailto:info@starsim.org): we're very happy to help!
