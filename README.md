@@ -78,6 +78,25 @@ sim$diseases$sir$plot()
 ```
 <img src="man/figures/example-r.png" alt="SIR dynamics" />
 
+### A model declared in R (Starsim 4)
+
+With Starsim 4, a model can be declared from its transitions, written as arrow strings, with rates as formulas whose names are the model's states and parameters. The same model then runs as an ODE, as a stochastic compartmental model, or as agents.
+
+```R
+library(starsim)
+load_starsim()
+
+seir <- disease(
+    transition("S -> E", beta = ~ beta, source = "I"),
+    transition("E -> I", dur = ~ latent),
+    transition("I -> R", rate = ~ gamma),
+    beta = 0.3, latent = 5, gamma = 0.1, init = list(I = 10), name = "seir"
+)
+sim <- ss$Sim(seir, stop = 120L)
+sim$run()
+head(results_df(sim))
+```
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to set up a development environment, run tests, and submit pull requests.

@@ -8,8 +8,10 @@ sc$options(dpi=200)
 
 pars <- list(
   n_agents = 10000,
-  birth_rate = 20,
-  death_rate = 15,
+  demographics = list(
+    list(type = 'births', birth_rate = 20),
+    list(type = 'deaths', death_rate = 15)
+  ),
   networks = list(
     type = 'randomnet',
     n_contacts = 4
