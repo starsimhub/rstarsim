@@ -102,7 +102,7 @@ NULL
 #' @rdname summary.starsim
 #' @export
 summary.starsim.sim.Sim <- function(object, ...) {
-  unlist(reticulate::py_to_r(reticulate::import_builtins()$dict(raw(object)$summarize(...))))
+  unlist(reticulate::py_to_r(raw(object)$summarize(...)$value$to_dict()))
 }
 
 #' @rdname summary.starsim
