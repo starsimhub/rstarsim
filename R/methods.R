@@ -18,7 +18,7 @@ raw <- function(x) {
 #' @return The Matplotlib figure, invisibly.
 #'
 #' @name plot.starsim
-#' @rawNamespace S3method(plot, starsim.modules.Base, plot_starsim)
+#' @rawNamespace S3method(plot, starsim.internals.modules.Base, plot_starsim)
 #' @rawNamespace S3method(plot, starsim.run.MultiSim, plot_starsim)
 #' @rawNamespace S3method(plot, starsim.fit.Fit, plot_starsim)
 #' @rawNamespace S3method(plot, starsim.results.Result, plot_starsim)
@@ -66,7 +66,7 @@ print.matplotlib.figure.Figure <- function(x, ...) {
 #' @return A data frame.
 #'
 #' @name as.data.frame.starsim
-#' @rawNamespace S3method(as.data.frame, starsim.modules.Base, df_starsim)
+#' @rawNamespace S3method(as.data.frame, starsim.internals.modules.Base, df_starsim)
 #' @rawNamespace S3method(as.data.frame, starsim.run.MultiSim, df_starsim)
 #' @rawNamespace S3method(as.data.frame, starsim.results.Result, df_starsim)
 #' @rawNamespace S3method(as.data.frame, starsim.results.Results, df_starsim)
@@ -112,7 +112,7 @@ summary.starsim.run.MultiSim <- function(object, ...) {
 }
 
 # Printed as in Python, in one line, not as reticulate prints a Python object (with its signature, if it can be called)
-#' @rawNamespace S3method(print, starsim.modules.Base, print_starsim)
+#' @rawNamespace S3method(print, starsim.internals.modules.Base, print_starsim)
 #' @rawNamespace S3method(print, starsim.run.MultiSim, print_starsim)
 #' @rawNamespace S3method(print, starsim.internals.expressions.Expr, print_starsim)
 #' @noRd
