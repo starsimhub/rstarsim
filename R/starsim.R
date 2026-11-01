@@ -33,7 +33,7 @@ before_load <- function() {
 # Figures are returned to R rather than shown by Python, and Python's output appears in order with R's (as in Rscript, where it would otherwise be buffered)
 on_load <- function() {
   version <- ss$`__version__`
-  if (utils::compareVersion(version, "4.0.0") < 0) {
+  if (utils::compareVersion(sub("(a|b|rc|\\.dev).*$", "", version), "4.0.0") < 0) { # Without any pre-release suffix (e.g. 4.0.0b1), which compareVersion() can't read
     warning("R-Starsim ", utils::packageVersion("starsim"), " needs Starsim 4, but Starsim ", version, " is installed; update it with reinstall_starsim()", call. = FALSE)
   }
   ss$options(show = FALSE)
