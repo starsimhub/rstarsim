@@ -86,7 +86,7 @@ test_that("Scenarios, data, and fitting work from R", {
   truth$run()
   df <- as.data.frame(truth)
   expect_equal(df$time[1], as.Date("2025-01-01")) # Dates are Dates
-  data <- truth$to_data("cases", resample = "week")
+  data <- truth$to_synthetic_data("cases", resample = "week")
   sim <- do.call(Sim, c(list(sir, data = data), pars))
   fit <- sim$fit(verbose = 0)
   expect_equal(fit$pars$beta, 0.025, tolerance = 0.05)

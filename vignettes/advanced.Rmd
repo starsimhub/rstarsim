@@ -89,7 +89,7 @@ A model is fitted by finding the values of its parameters that make its results 
 ```{r, eval=FALSE}
 truth <- make_sim(pars = list(beta = 0.025), rand_seed = 2)
 truth$run()
-data <- truth$to_data("cases", resample = "week")
+data <- truth$to_synthetic_data("cases", resample = "week")
 head(data)
 ```
 

@@ -116,7 +116,7 @@ vaccinate <- ss_function("vaccinate")
 modify <- ss_function("modify")
 
 ss_par <- ss_function("par")
-par_keywords <- c("value", "bounds", "prior", "source", "doc", "name", "label", "literal")
+par_keywords <- c("value", "bounds", "prior", "source", "doc", "name", "label")
 
 #' @rdname starsim-functions
 #' @export
