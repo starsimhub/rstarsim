@@ -30,7 +30,7 @@ p <- ggplot(df, aes(time)) +
   geom_line(aes(y = sir_R, colour = "Recovered")) +
   labs(x = "Day", y = "People", colour = NULL)
 save_png("simple-custom.png", p, height = 4)
-msim <- sim$run(solver = "binomial", n_runs = 20)
+msim <- parallel(sim$new(solver = "binomial"), n_runs = 20)
 save_png("simple-msim.png", msim$plot())
 print(summary(msim))
 save_png("../man/figures/example-r.png", msim$plot())
@@ -58,7 +58,7 @@ make_sim <- function(...) {
 sim <- make_sim()
 sim$run()
 save_png("advanced-age.png", sim$results$sir$I$by("age")$plot(), height = 4)
-vaccine <- vaccinate(efficacy = 0.9, where = sir$age >= 65, coverage = 0.8, at = "2025-02-01")
+vaccine <- vaccinate(efficacy = 0.9, who = sir$age >= 65, coverage = 0.8, when = "2025-02-01")
 masks <- modify(sir$pars$beta, multiply = 0.6, start = "2025-02-01")
 scenarios <- list("No intervention" = NULL, "Vaccine" = vaccine, "Masks" = masks)
 sims <- lapply(scenarios, function(intervention) make_sim(interventions = intervention))
@@ -74,7 +74,7 @@ sim <- make_sim(data = data)
 fit <- sim$fit()
 save_png("advanced-fit.png", fit$plot(), height = 4)
 print(fit$pars$beta)
-msim <- fit$sim$run(solver = "binomial", n_runs = 20)
+msim <- parallel(fit$sim$new(solver = "binomial"), n_runs = 20)
 print(class(msim$plot()))
 
 # troubleshooting.Rmd

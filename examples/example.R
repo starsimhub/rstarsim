@@ -11,6 +11,6 @@ sim <- Sim(sir, stop = 100)
 sim$run()
 sim$plot()
 
-msim <- sim$run(solver = "binomial", n_runs = 20)
+msim <- parallel(sim$new(solver = "binomial"), n_runs = 20)
 msim$plot()
 summary(msim)

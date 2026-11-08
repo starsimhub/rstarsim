@@ -60,7 +60,7 @@ Every state and transition has a result of the same name (`S`, `I`, `R`, `infect
 An intervention changes the course of the epidemic from some point on. Here are two: vaccinating 80% of people aged 65 and over on 1 February, with a vaccine that cuts their chance of infection by 90%, and masks, which cut transmission by 40% from the same day:
 
 ```{r, eval=FALSE}
-vaccine <- vaccinate(efficacy = 0.9, where = sir$age >= 65, coverage = 0.8, at = "2025-02-01")
+vaccine <- vaccinate(efficacy = 0.9, who = sir$age >= 65, coverage = 0.8, when = "2025-02-01")
 masks <- modify(sir$pars$beta, multiply = 0.6, start = "2025-02-01")
 ```
 
@@ -109,7 +109,7 @@ The plot shows the model's cases with the starting value of β (before) and the 
 To see the uncertainty in the fitted model, run it many times as a stochastic model, as in [A first model](simple.html#many-runs):
 
 ```{r, eval=FALSE}
-msim <- fit$sim$run(solver = "binomial", n_runs = 20)
+msim <- parallel(fit$sim$new(solver = "binomial"), n_runs = 20)
 msim$plot()
 ```
 

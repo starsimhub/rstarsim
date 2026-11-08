@@ -95,7 +95,7 @@ ggplot(df, aes(time)) +
 The ODE gives one answer: the epidemic as expected on average. A real epidemic varies by chance from one outbreak to the next. To see this, run the same model as a stochastic model, in which the number of people who move between states each day is random, and run it many times. `solver = "binomial"` runs it this way, and `n_runs = 20` runs it 20 times, each with its own random seed:
 
 ```{r, eval=FALSE}
-msim <- sim$run(solver = "binomial", n_runs = 20)
+msim <- parallel(sim$new(solver = "binomial"), n_runs = 20)
 msim$plot()
 ```
 <img src="simple-msim.png" alt="SIR epidemic over 20 stochastic runs" />

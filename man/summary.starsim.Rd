@@ -26,7 +26,7 @@ the final value of a state.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-msim <- Sim(ss$SIR(), stop = 100)$run(solver = "binomial", n_runs = 20)
+msim <- parallel(Sim(ss$SIR(), stop = 100)$new(solver = "binomial"), n_runs = 20)
 summary(msim)
 \dontshow{\}) # examplesIf}
 }

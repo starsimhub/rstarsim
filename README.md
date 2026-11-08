@@ -42,7 +42,7 @@ sim$plot()
 This runs the model as an ODE. To see how much an epidemic varies by chance, run it 20 times as a stochastic model:
 
 ```R
-msim <- sim$run(solver = "binomial", n_runs = 20)
+msim <- parallel(sim$new(solver = "binomial"), n_runs = 20)
 msim$plot()
 summary(msim)
 ```

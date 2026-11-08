@@ -21,7 +21,7 @@ test_that("A model runs, plots, and gives its results", {
   on.exit(dev.off())
   expect_s3_class(plot(sim), "matplotlib.figure.Figure")
 
-  msim <- sim$run(solver = "binomial", n_runs = 20) # Counts given as R numbers
+  msim <- parallel(sim$new(solver = "binomial"), n_runs = 20) # Counts given as R numbers
   s <- summary(msim)
   expect_equal(s$result[1:3], c("sir_S", "sir_I", "sir_R")) # The index is a column
   expect_true(all(s$low <= s$median & s$median <= s$high))
@@ -72,7 +72,7 @@ test_that("Scenarios, data, and fitting work from R", {
     networks = contacts(ages = c(0, 15, 65), matrix = rbind(c(10, 6, 1), c(3, 8, 1), c(3, 6, 3))),
     total_pop = 1e6, start = "2025-01-01", stop = "2025-07-01", verbose = 0
   )
-  vaccine <- vaccinate(efficacy = 0.9, where = sir$age >= 65, coverage = 0.8, at = "2025-02-01")
+  vaccine <- vaccinate(efficacy = 0.9, who = sir$age >= 65, coverage = 0.8, when = "2025-02-01")
   masks <- modify(sir$pars$beta, multiply = 0.6, start = "2025-02-01")
   scenarios <- list("No intervention" = NULL, "Vaccine" = vaccine, "Masks" = masks)
   sims <- lapply(scenarios, function(iv) do.call(Sim, c(list(sir, interventions = iv), pars)))

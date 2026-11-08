@@ -95,7 +95,7 @@ df_starsim <- function(x, row.names = NULL, optional = FALSE, ...) {
 #'
 #' @name summary.starsim
 #' @examplesIf interactive()
-#' msim <- Sim(ss$SIR(), stop = 100)$run(solver = "binomial", n_runs = 20)
+#' msim <- parallel(Sim(ss$SIR(), stop = 100)$new(solver = "binomial"), n_runs = 20)
 #' summary(msim)
 NULL
 
