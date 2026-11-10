@@ -5,6 +5,11 @@ raw <- function(x) {
   reticulate::r_to_py(x, convert = FALSE)
 }
 
+# A method of a Starsim object, without reticulate's conversion of what it returns (nor this package's: see dollar_starsim())
+method <- function(x, name) {
+  reticulate::py_get_attr(raw(x), name)
+}
+
 #' Plot a sim, multisim, fit, or result
 #'
 #' Plots with Starsim's own plots, as \code{x$plot()} does, on the current R
@@ -31,7 +36,7 @@ raw <- function(x) {
 NULL
 
 plot_starsim <- function(x, ...) {
-  fig <- raw(x)$plot(...)
+  fig <- method(x, "plot")(...)
   if (!inherits(fig, "python.builtin.NoneType")) {
     print(fig)
   }
@@ -78,7 +83,7 @@ print.matplotlib.figure.Figure <- function(x, ...) {
 NULL
 
 df_starsim <- function(x, row.names = NULL, optional = FALSE, ...) {
-  r_df(raw(x)$to_df(...))
+  r_df(method(x, "to_df")(...))
 }
 
 #' Summarize a sim or multisim
@@ -102,13 +107,13 @@ NULL
 #' @rdname summary.starsim
 #' @export
 summary.starsim.sim.Sim <- function(object, ...) {
-  unlist(reticulate::py_to_r(raw(object)$summarize(...)$value$to_dict()))
+  unlist(reticulate::py_to_r(method(object, "summarize")(...)$value$to_dict()))
 }
 
 #' @rdname summary.starsim
 #' @export
 summary.starsim.run.MultiSim <- function(object, ...) {
-  r_df(raw(object)$summarize(...))
+  r_df(method(object, "summarize")(...))
 }
 
 # Printed as in Python, in one line, not as reticulate prints a Python object (with its signature, if it can be called)
@@ -146,4 +151,76 @@ r_column <- function(col) {
   } else {
     unlist(reticulate::py_to_r(col$astype("str")$tolist()))
   }
+}
+
+# A method of a Starsim object, called with R arguments as the functions of this package are (see py_args() and
+# with_names()), and returning R values: a table as a data frame, and text (e.g. sim$equations()) printed as text;
+# anything else is as reticulate gives it
+#' @rawNamespace S3method("$", starsim.internals.modules.Base, dollar_starsim)
+#' @rawNamespace S3method("$", starsim.run.MultiSim, dollar_starsim)
+#' @rawNamespace S3method("$", starsim.fit.Fit, dollar_starsim)
+#' @noRd
+dollar_starsim <- function(x, name) {
+  fn <- reticulate::py_get_attr(raw(x), name, silent = TRUE)
+  if (!inherits(fn, c("python.builtin.method", "python.builtin.function", "python.builtin.builtin_function_or_method"))) {
+    return(NextMethod())
+  }
+  function(...) {
+    envir <- parent.frame()
+    out <- with_names(envir, do.call(fn, py_args(list(...))))
+    if (reticulate::py_id(out) == reticulate::py_id(x)) { # The object itself, changed (e.g. disease$stratify()), so not printed again
+      return(invisible(x))
+    }
+    r_value(out)
+  }
+}
+
+# What a method returned, as an R value (see dollar_starsim())
+r_value <- function(x) {
+  if (inherits(x, c("pandas.DataFrame", "pandas.core.frame.DataFrame"))) { # Its name in pandas 3, and before
+    return(r_df(x))
+  }
+  x <- reticulate::r_to_py(x, convert = TRUE)
+  if (inherits(x, "starsim.internals.display.Text")) x else reticulate::py_to_r(x)
+}
+
+# Text that shows itself in Python (sim$describe(), sim$equations()), printed as it is
+#' @rawNamespace S3method(print, starsim.internals.display.Text, print_text)
+#' @noRd
+print_text <- function(x, ...) {
+  cat(reticulate::py_str(x), "\n", sep = "")
+  invisible(x)
+}
+
+# A dictionary of Starsim's (e.g. sim$diseases, sim$interventions) by position as well as by name: sim$interventions[[0]],
+# with 0 an integer, as Python needs, though R's numbers are not
+#' @rawNamespace S3method("[[", sciris.sc_odict.odict, item_odict)
+#' @noRd
+item_odict <- function(x, i, ...) {
+  if (is.numeric(i)) {
+    i <- as.integer(i)
+  }
+  reticulate::py_get_item(x, i)
+}
+
+# The sims of a multisim (msim$sims), by position (from 0, as in Python) or scenario: msim$sims[[0]], msim$sims[["Vaccine"]];
+# as.list() for an R list, e.g. to loop over (for (sim in as.list(msim$sims))). Not converted to an R list as they come,
+# since a sim that was restarted for its runs is made again only when it is asked for
+#' @rawNamespace S3method("[[", starsim.run.ByScenario, item_sims)
+#' @rawNamespace S3method(length, starsim.run.ByScenario, length_sims)
+#' @rawNamespace S3method(as.list, starsim.run.ByScenario, list_sims)
+#' @noRd
+item_sims <- function(x, i, ...) {
+  if (is.numeric(i)) {
+    i <- as.integer(i)
+  }
+  reticulate::py_get_item(x, i)
+}
+
+length_sims <- function(x) {
+  reticulate::py_len(x)
+}
+
+list_sims <- function(x, ...) {
+  lapply(seq_len(length(x)) - 1L, function(i) x[[i]])
 }

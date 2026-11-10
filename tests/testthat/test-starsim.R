@@ -91,3 +91,41 @@ test_that("Scenarios, data, and fitting work from R", {
   fit <- sim$fit(verbose = 0)
   expect_equal(fit$pars$beta, 0.025, tolerance = 0.05)
 })
+
+test_that("Methods and names work as in Python", {
+  skip_if_no_starsim()
+
+  # What is made is named after R's variables, as after Python's
+  states("S I R")
+  beta <- par(0.3)
+  infection <- Transition(S, I, rate = beta * I)
+  recovery <- Transition(I, R, dur = days(10))
+  sir <- Disease(infection, recovery)
+  expect_equal(names(sir$graph$transitions), c("infection", "recovery"))
+  expect_true("beta" %in% names(sir$pars))
+
+  # A method takes R values as the functions do, and returns R values
+  sir$stratify(age = list("0" = 0.3, "15" = 0.7)) # Numbers as names give numbers as keys
+  campaign <- vaccinate(ss$Vaccine(efficacy = 0.9), coverage = 0.5, when = list(10))
+  sim <- Sim(sir, stop = 50, interventions = campaign, verbose = 0)
+  sim$run()
+  expect_s3_class(sim$equations(), "starsim.internals.display.Text")
+  expect_output(print(sim$equations()), "dS/dt")
+  expect_equal(sim$interventions[[0]]$name, "campaign") # By position, from 0, as in Python
+
+  # The sims of a multisim, by position or as a list
+  msim <- MultiSim(sim, n_runs = 2)
+  msim$run()
+  expect_equal(length(msim$sims), 2)
+  expect_length(as.list(msim$sims), 2)
+  expect_s3_class(msim$sims[[1]], "starsim.sim.Sim")
+
+  # The library
+  expect_s3_class(ssl$Measles(), "starsim.diseases.Disease")
+})
+
+test_that("A method that changes its object returns it invisibly", {
+  skip_if_no_starsim()
+  sir <- ss$SIR()
+  expect_invisible(sir$stratify(age = list("0" = 0.3, "15" = 0.7)))
+})

@@ -15,6 +15,18 @@
 #' sim <- ss$Sim(ss$SIR(), stop = 100)
 ss <- NULL
 
+#' The Starsim library, as a Python module
+#'
+#' Starsim's library of diseases and networks, as in Python's
+#' \code{import starsim.library as ssl}: e.g. \code{ssl$Measles()} in R is
+#' \code{ssl.Measles()} in Python. It is loaded the first time it is used.
+#'
+#' @format A Python module (see \code{reticulate::import()}).
+#' @export
+#' @examplesIf interactive()
+#' sim <- Sim(ssl$Measles(), stop = days(100))
+ssl <- NULL
+
 .onLoad <- function(libname, pkgname) {
   # Prefer the environment made by init_starsim(), if there is one; RETICULATE_PYTHON or use_python() still take precedence.
   # Its Python is looked for directly, since asking conda takes about a second
@@ -23,6 +35,7 @@ ss <- NULL
     reticulate::use_python(python, required = FALSE)
   }
   ss <<- reticulate::import("starsim", delay_load = list(before_load = before_load, on_load = on_load))
+  ssl <<- reticulate::import("starsim.library", delay_load = list(before_load = function() ss$`__version__`)) # Starsim first, set up as above
 }
 
 # Plots are drawn on R's graphics device (see print.matplotlib.figure.Figure), so Matplotlib never opens windows of its own
@@ -38,6 +51,7 @@ on_load <- function() {
   }
   ss$options(show = FALSE)
   reticulate::py_run_string("import sys\nif hasattr(sys.stdout, 'reconfigure'): sys.stdout.reconfigure(line_buffering=True)")
+  reticulate::py_run_string("import sys\nsys.ps1 = getattr(sys, 'ps1', '>>> ')") # R shows what is returned, as Python's interactive prompt does, so a table that is printed and returned (fit$summarize()) is shown once
 }
 
 miniconda_python <- function(envname) {

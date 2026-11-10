@@ -19,10 +19,27 @@ py_args <- function(x) {
   if (whole) as.integer(x) else x
 }
 
-# An R function that calls a function of Starsim with R arguments
+# An R function that calls a function of Starsim with R arguments, naming what it makes after R's variables
 ss_function <- function(name) {
   force(name)
-  function(...) do.call(reticulate::py_get_attr(ss, name), py_args(list(...)))
+  function(...) {
+    envir <- parent.frame()
+    with_names(envir, do.call(reticulate::py_get_attr(ss, name), py_args(list(...))))
+  }
+}
+
+# Evaluates `expr` with R's variables (the global ones, and those of `envir`) given to Starsim, which can't see them, as
+# Python's are: so that Disease(infection, recovery) names its transitions, and a parameter (beta <- par(0.3)) its parameter,
+# after the variables that hold them, as in Python (see ss.utils.named())
+with_names <- function(envir, expr) {
+  envs <- if (identical(envir, globalenv())) list(globalenv()) else list(globalenv(), envir)
+  spaces <- lapply(envs, function(env) {
+    keys <- ls(env) # Not those starting with ".", as Python leaves out those starting with "_"
+    vals <- mget(keys, envir = env)
+    keep <- vapply(vals, inherits, logical(1), "python.builtin.object")
+    reticulate::py_dict(as.list(keys[keep]), unname(vals[keep]))
+  })
+  with(do.call(ss$utils$named, spaces), expr)
 }
 
 #' The commonly used parts of Starsim
