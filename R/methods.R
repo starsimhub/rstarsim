@@ -25,7 +25,7 @@ method <- function(x, name) {
 #' @name plot.starsim
 #' @rawNamespace S3method(plot, starsim.internals.modules.Base, plot_starsim)
 #' @rawNamespace S3method(plot, starsim.run.MultiSim, plot_starsim)
-#' @rawNamespace S3method(plot, starsim.fit.Fit, plot_starsim)
+#' @rawNamespace S3method(plot, starsim.internals.fitting.Fit, plot_starsim)
 #' @rawNamespace S3method(plot, starsim.results.Result, plot_starsim)
 #' @rawNamespace S3method(plot, starsim.results.Results, plot_starsim)
 #' @examplesIf interactive()
@@ -158,7 +158,7 @@ r_column <- function(col) {
 # anything else is as reticulate gives it
 #' @rawNamespace S3method("$", starsim.internals.modules.Base, dollar_starsim)
 #' @rawNamespace S3method("$", starsim.run.MultiSim, dollar_starsim)
-#' @rawNamespace S3method("$", starsim.fit.Fit, dollar_starsim)
+#' @rawNamespace S3method("$", starsim.internals.fitting.Fit, dollar_starsim)
 #' @noRd
 dollar_starsim <- function(x, name) {
   fn <- reticulate::py_get_attr(raw(x), name, silent = TRUE)
