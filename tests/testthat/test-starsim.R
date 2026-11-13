@@ -46,7 +46,7 @@ test_that("States are put in scope, and replace only states", {
 
   local({
     states("S I R")
-    expect_s3_class(I, "starsim.transitions.State")
+    expect_s3_class(I, "starsim.internals.transitions.State")
     states("S I R") # Run again
     R <- 5
     expect_error(states("S I R"), "would replace R")

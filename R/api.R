@@ -188,5 +188,5 @@ states <- function(names, ..., envir = parent.frame()) {
 }
 
 is_state <- function(x) {
-  inherits(x, "starsim.transitions.State")
+  inherits(x, "starsim.internals.transitions.State")
 }
