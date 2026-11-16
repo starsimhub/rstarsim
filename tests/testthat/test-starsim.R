@@ -15,7 +15,7 @@ test_that("A model runs, plots, and gives its results", {
   df <- as.data.frame(sim)
   expect_gt(max(df$sir_I), 1000) # The epidemic grows
   expect_equal(df$time[1:2], c(0, 1)) # Time is the first column
-  expect_named(summary(sim)[1:3], c("sir_S", "sir_I", "sir_R"))
+  expect_named(summary(sim)[1:3], c("sir.S", "sir.I", "sir.R"))
 
   pdf(NULL)
   on.exit(dev.off())
@@ -23,7 +23,7 @@ test_that("A model runs, plots, and gives its results", {
 
   msim <- parallel(sim$new(solver = "binomial"), n_runs = 20) # Counts given as R numbers
   s <- summary(msim)
-  expect_equal(s$result[1:3], c("sir_S", "sir_I", "sir_R")) # The index is a column
+  expect_equal(s$result[1:3], c("sir.S", "sir.I", "sir.R")) # The index is a column
   expect_true(all(s$low <= s$median & s$median <= s$high))
 })
 
