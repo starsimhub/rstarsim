@@ -15,7 +15,7 @@ BugReports: https://github.com/starsimhub/rstarsim/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-SystemRequirements: Python (>= 3.11)
+SystemRequirements: Python (>= 3.12)
 Config/reticulate:
   list(
     packages = list(

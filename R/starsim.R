@@ -81,7 +81,7 @@ conda_env_exists <- function(envname) {
 #'   cannot be activated.
 #' @param package Character. What to install, as given to pip: e.g.
 #'   \code{"starsim==4.0.0"} for a particular version, or a Git URL.
-#' @param python_version Character. The version of Python for a new environment.
+#' @param python_version Character. The version of Python for a new environment (any that Starsim supports).
 #' @param ask Logical. Whether to ask before installing anything.
 #'
 #' @return \code{NULL}, invisibly; called to install Starsim.
@@ -93,7 +93,7 @@ conda_env_exists <- function(envname) {
 #' @examplesIf interactive()
 #' install_starsim()
 #' install_starsim(ask = FALSE) # In a script, without asking
-install_starsim <- function(..., envname = "r-starsim", required = FALSE, package = "starsim", python_version = "3.12", ask = interactive()) {
+install_starsim <- function(..., envname = "r-starsim", required = FALSE, package = "starsim", python_version = "3.14", ask = interactive()) {
   check_envname(envname)
 
   need_conda <- !dir.exists(reticulate::miniconda_path())

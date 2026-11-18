@@ -1,7 +1,7 @@
 # R-Starsim
 
 
-## Version 2.0.0 (in development, for Starsim v4)
+## Version 2.0.0 (in development)
 
 * R-Starsim now uses Starsim v4, in which a model is written as its states and the transitions between them, and runs as an ODE, a stochastic model, or with agents.
 * `library(starsim)` is all that's needed: Starsim is loaded the first time it is used, and `load_starsim()` is only needed to choose a Python environment. It no longer puts `ss`, `sc`, `np`, `pd`, `plt`, `os`, Starsim's classes, or `reticulate`'s functions in the global environment: `ss` is part of the package, and the others can be imported with `reticulate::import()`.

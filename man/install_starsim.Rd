@@ -9,7 +9,7 @@ install_starsim(
   envname = "r-starsim",
   required = FALSE,
   package = "starsim",
-  python_version = "3.12",
+  python_version = "3.14",
   ask = interactive()
 )
 }
@@ -25,7 +25,7 @@ cannot be activated.}
 \item{package}{Character. What to install, as given to pip: e.g.
 \code{"starsim==4.0.0"} for a particular version, or a Git URL.}
 
-\item{python_version}{Character. The version of Python for a new environment.}
+\item{python_version}{Character. The version of Python for a new environment (any that Starsim supports).}
 
 \item{ask}{Logical. Whether to ask before installing anything.}
 }

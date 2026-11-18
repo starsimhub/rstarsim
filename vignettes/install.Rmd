@@ -60,7 +60,7 @@ load_starsim("my_env")
 #> Starsim 4.0.0 loaded from /home/me/miniconda3/envs/my_env/bin/python
 ```
 
-For other kinds of environment (such as a virtual environment or a particular Python), use `reticulate` to choose it, e.g. `reticulate::use_virtualenv("~/my_venv")` or `reticulate::use_python("/usr/bin/python3")`, before using Starsim. Starsim needs Python 3.11 or later.
+For other kinds of environment (such as a virtual environment or a particular Python), use `reticulate` to choose it, e.g. `reticulate::use_virtualenv("~/my_venv")` or `reticulate::use_python("/usr/bin/python3")`, before using Starsim. It must be a version of Python that Starsim supports.
 
 
 ## Next steps
