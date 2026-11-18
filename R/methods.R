@@ -28,7 +28,7 @@ method <- function(x, name) {
 #' @rawNamespace S3method(plot, starsim.internals.fitting.Fit, plot_starsim)
 #' @rawNamespace S3method(plot, starsim.results.Result, plot_starsim)
 #' @rawNamespace S3method(plot, starsim.results.Results, plot_starsim)
-#' @examplesIf interactive()
+#' @examplesIf starsim_available()
 #' sim <- Sim(ss$SIR(), stop = 100)
 #' sim$run()
 #' plot(sim)
@@ -75,7 +75,7 @@ print.matplotlib.figure.Figure <- function(x, ...) {
 #' @rawNamespace S3method(as.data.frame, starsim.run.MultiSim, df_starsim)
 #' @rawNamespace S3method(as.data.frame, starsim.results.Result, df_starsim)
 #' @rawNamespace S3method(as.data.frame, starsim.results.Results, df_starsim)
-#' @examplesIf interactive()
+#' @examplesIf starsim_available()
 #' sim <- Sim(ss$SIR(), stop = 100)
 #' sim$run()
 #' df <- as.data.frame(sim)
@@ -99,7 +99,7 @@ df_starsim <- function(x, row.names = NULL, optional = FALSE, ...) {
 #'   the standard deviation of each result in each scenario.
 #'
 #' @name summary.starsim
-#' @examplesIf interactive()
+#' @examplesIf starsim_available()
 #' msim <- parallel(Sim(ss$SIR(), stop = 100)$new(solver = "binomial"), n_runs = 20)
 #' summary(msim)
 NULL

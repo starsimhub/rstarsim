@@ -19,7 +19,7 @@ The version of Starsim, invisibly.
 \description{
 Loads Starsim from the given Python environment, and says which version it
 is. This is optional: Starsim is loaded the first time it is used, from the
-environment made by \code{\link{init_starsim}} if there is one, or else
+environment made by \code{\link{install_starsim}} if there is one, or else
 from the Python that \code{reticulate} would use. Call this first to use
 another environment, or to check that Starsim loads.
 }
@@ -30,5 +30,5 @@ load_starsim("my_env")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{init_starsim}} to install Starsim.
+\code{\link{install_starsim}} to install Starsim.
 }

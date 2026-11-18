@@ -25,7 +25,7 @@ Each result over the whole run: the total of a flow (such as infections) and
 the final value of a state.
 }
 \examples{
-\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
+\dontshow{if (starsim_available()) withAutoprint(\{ # examplesIf}
 msim <- parallel(Sim(ss$SIR(), stop = 100)$new(solver = "binomial"), n_runs = 20)
 summary(msim)
 \dontshow{\}) # examplesIf}

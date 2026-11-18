@@ -16,9 +16,10 @@ reference:
   - summary.starsim
 - title: Installation
   contents:
-  - init_starsim
+  - install_starsim
   - reinstall_starsim
   - load_starsim
+  - starsim_available
 
 articles:
 - title: Vignettes

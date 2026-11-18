@@ -1,5 +1,5 @@
 skip_if_no_starsim <- function() {
-  skip_if_not(reticulate::py_module_available("starsim"), "Starsim is not installed")
+  skip_if_not(starsim_available(), "Starsim is not installed")
 }
 
 test_that("A model runs, plots, and gives its results", {
@@ -30,15 +30,11 @@ test_that("A model runs, plots, and gives its results", {
 test_that("R values are passed as a Python user would type them", {
   skip_if_no_starsim()
 
-  expect_identical(py_args(list(2, 2.5, c(0, 15))), list(2L, 2.5, c(0L, 15L))) # Whole numbers are integers
   shares <- reticulate::py_to_r(reticulate::py_str(py_args(list("0" = 0.3, "65" = 0.7))))
   expect_equal(shares, "{0: 0.3, 65: 0.7}") # Numbers as names are numbers as keys
   expect_identical(py_args(list(a = NULL))$a, NULL) # NULL is None
 
   expect_s3_class(par(0.3, bounds = c(0.1, 1)), "starsim.internals.expressions.par")
-  pdf(NULL)
-  on.exit(dev.off())
-  expect_type(par("mar"), "double") # Graphical parameters are R's
 })
 
 test_that("States are put in scope, and replace only states", {
@@ -128,4 +124,15 @@ test_that("A method that changes its object returns it invisibly", {
   skip_if_no_starsim()
   sir <- ss$SIR()
   expect_invisible(sir$stratify(age = list("0" = 0.3, "15" = 0.7)))
+})
+
+test_that("Arguments are checked without Python", {
+  expect_error(states(c(1, 2)), "states' names")
+  expect_error(install_starsim(envname = ""), "conda environment")
+  expect_error(load_starsim(envname = 1), "conda environment")
+  expect_identical(py_args(list(2, 2.5, c(0, 15))), list(2L, 2.5, c(0L, 15L))) # Whole numbers are integers
+  expect_identical(py_args(Inf), Inf)
+  pdf(NULL)
+  on.exit(dev.off())
+  expect_type(par("mar"), "double") # Graphical parameters are R's, not Starsim's
 })

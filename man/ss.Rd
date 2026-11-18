@@ -17,7 +17,7 @@ package (see \code{\link{Sim}}); \code{ss} has everything else, and is always th
 if one of those names is taken by a variable of your own.
 }
 \examples{
-\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
+\dontshow{if (starsim_available()) withAutoprint(\{ # examplesIf}
 sim <- ss$Sim(ss$SIR(), stop = 100)
 \dontshow{\}) # examplesIf}
 }

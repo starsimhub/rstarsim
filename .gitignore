@@ -56,3 +56,4 @@ rsconnect/
 .DS_Store
 .quarto
 docs
+!vignettes/*.png
