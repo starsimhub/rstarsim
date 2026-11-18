@@ -76,7 +76,7 @@ with_names <- function(envir, expr) {
 #'   \code{summary()}, which work on sims, multisims, fits and results.
 #'
 #' @name starsim-functions
-#' @examplesIf interactive()
+#' @examplesIf starsim::starsim_available()
 #' states("S I R")
 #' beta <- par(0.3, bounds = c(0.1, 1))
 #' sir <- Disease(
@@ -161,7 +161,7 @@ par <- function(...) {
 #' @seealso \code{\link{starsim-functions}}
 #'
 #' @export
-#' @examplesIf interactive()
+#' @examplesIf starsim::starsim_available()
 #' states("S I R") # Now S, I and R are states
 #' sir <- Disease(
 #'   infection = Transition(S, I, rate = 0.3 * I),

@@ -13,12 +13,12 @@ R-Starsim can be installed from GitHub:
 # install.packages("devtools")
 devtools::install_github("starsimhub/rstarsim")
 library(starsim)
-init_starsim()
+install_starsim()
 ```
 
-`init_starsim()` installs Starsim, and Python if needed (in a conda environment called `r-starsim`). This only needs to be done once. To update Starsim later, use `reinstall_starsim()`.
+`install_starsim()` installs Starsim, and Python if needed (in a conda environment called `r-starsim`). This only needs to be done once. To update Starsim later, use `reinstall_starsim()`.
 
-If you already have Starsim installed in a Python environment of your own, skip `init_starsim()` and tell R-Starsim where it is, e.g. `load_starsim("my_env")` for a conda environment called `my_env`.
+If you already have Starsim installed in a Python environment of your own, skip `install_starsim()` and tell R-Starsim where it is, e.g. `load_starsim("my_env")` for a conda environment called `my_env`.
 
 
 ## Example

@@ -2,6 +2,10 @@
 title: "Age groups, interventions, and fitting"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{Age groups, interventions, and fitting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 editor_options:
   chunk_output_type: inline
 ---

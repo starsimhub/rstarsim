@@ -2,6 +2,10 @@
 title: "Using Starsim from R, and troubleshooting"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{Using Starsim from R, and troubleshooting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 editor_options:
   chunk_output_type: inline
 ---
@@ -55,7 +59,7 @@ If you haven't installed Starsim yet, see [Installation](install.html) first.
 
 ### Installation
 
-If `init_starsim()` fails, try creating your own Python environment (e.g. with `conda` or `uv`), installing Starsim into it with `pip install starsim`, and then telling R-Starsim to use it, e.g. for a conda environment called `my_env`:
+If `install_starsim()` fails, try creating your own Python environment (e.g. with `conda` or `uv`), installing Starsim into it with `pip install starsim`, and then telling R-Starsim to use it, e.g. for a conda environment called `my_env`:
 ```R
 library(starsim)
 load_starsim("my_env")

@@ -1,9 +1,9 @@
 # R-Starsim
 
 
-## Version 2.0.0 (in development, for Starsim 4)
+## Version 2.0.0 (in development)
 
-* R-Starsim now uses Starsim 4, in which a model is written as its states and the transitions between them, and runs as an ODE, a stochastic model, or with agents.
+* R-Starsim now uses Starsim v4, in which a model is written as its states and the transitions between them, and runs as an ODE, a stochastic model, or with agents.
 * `library(starsim)` is all that's needed: Starsim is loaded the first time it is used, and `load_starsim()` is only needed to choose a Python environment. It no longer puts `ss`, `sc`, `np`, `pd`, `plt`, `os`, Starsim's classes, or `reticulate`'s functions in the global environment: `ss` is part of the package, and the others can be imported with `reticulate::import()`.
 * The most commonly used parts of Starsim are R functions: `Sim()`, `MultiSim()`, `parallel()`, `Disease()`, `Transition()`, `outcome()`, `par()`, `contacts()`, `vaccinate()`, `modify()`, `days()`, and `years()`. They pass whole numbers to Python as integers, and named lists with numbers as names as dicts with numbers as keys. `par()` is also `graphics::par()` when given graphical parameters.
 * `states("S I R")` makes the states S, I and R, and puts them in scope.
@@ -13,8 +13,9 @@
 * `ssl` is Starsim's library of diseases and networks, as `import starsim.library as ssl` in Python (`ssl$Measles()`).
 * `plot()` plots sims, multisims, fits and results on R's graphics device, so plots appear in the console, RStudio, and R Markdown alike, and figures from `sim$plot()` and the like appear when printed.
 * `as.data.frame()` gives the results of a sim or multisim as a data frame, and `summary()` summarizes them; dates are `Date`s.
-* `init_starsim()` and `reinstall_starsim()` take `package`, to install a particular version of Starsim.
-* The vignettes are rewritten for Starsim 4: a first model, then age groups, interventions, and fitting.
+* `init_starsim()` is renamed `install_starsim()`, as in other packages that use Python (`install_tensorflow()`, `install_keras()`). It says what it will install and asks first in an interactive session (`ask = FALSE` to skip). It and `reinstall_starsim()` take `package`, to install a particular version of Starsim.
+* `starsim_available()` says whether a supported version of Starsim can be found, without loading it.
+* The vignettes are rewritten for Starsim v4: a first model, then age groups, interventions, and fitting.
 
 
 ## Version 1.1.0 (2026-04-14)

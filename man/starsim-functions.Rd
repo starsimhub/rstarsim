@@ -73,7 +73,7 @@ first argument is a value (\code{par(0.3, bounds = c(0.1, 1))}) or it is given
 one of Starsim's keywords (\code{value}, \code{bounds}, \code{prior}, ...).
 }
 \examples{
-\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
+\dontshow{if (starsim::starsim_available()) withAutoprint(\{ # examplesIf}
 states("S I R")
 beta <- par(0.3, bounds = c(0.1, 1))
 sir <- Disease(

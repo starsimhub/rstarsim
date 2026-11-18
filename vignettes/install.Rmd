@@ -2,6 +2,10 @@
 title: "Installation"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{Installation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 editor_options:
   chunk_output_type: inline
 ---
@@ -24,7 +28,7 @@ devtools::install_github("starsimhub/rstarsim")
 2. Install Starsim. This installs Python too if needed (specifically Miniconda), and creates a Python environment called `r-starsim` for Starsim. It may take a few minutes, depending on your computer and internet connection, but only needs to be done once.
 ```{r, eval=FALSE}
 library(starsim)
-init_starsim()
+install_starsim()
 ```
 
 3. Check that it works, by running Starsim's demo, which runs a sim, and plotting the results:
@@ -49,14 +53,14 @@ To install a particular version, give it as pip would, e.g. `reinstall_starsim(p
 
 ## Using your own Python
 
-If you already have Starsim installed in a Python environment of your own, skip `init_starsim()`, and say which environment to use before using Starsim, e.g. for a conda environment called `my_env`:
+If you already have Starsim installed in a Python environment of your own, skip `install_starsim()`, and say which environment to use before using Starsim, e.g. for a conda environment called `my_env`:
 ```{r, eval=FALSE}
 library(starsim)
 load_starsim("my_env")
 #> Starsim 4.0.0 loaded from /home/me/miniconda3/envs/my_env/bin/python
 ```
 
-For other kinds of environment (such as a virtual environment or a particular Python), use `reticulate` to choose it, e.g. `reticulate::use_virtualenv("~/my_venv")` or `reticulate::use_python("/usr/bin/python3")`, before using Starsim. Starsim needs Python 3.11 or later.
+For other kinds of environment (such as a virtual environment or a particular Python), use `reticulate` to choose it, e.g. `reticulate::use_virtualenv("~/my_venv")` or `reticulate::use_python("/usr/bin/python3")`, before using Starsim. It must be a version of Python that Starsim supports.
 
 
 ## Next steps

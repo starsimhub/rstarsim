@@ -4,9 +4,9 @@
 \name{starsim-package}
 \alias{starsim}
 \alias{starsim-package}
-\title{starsim: An R Interface to Starsim}
+\title{starsim: An R Interface to 'Starsim'}
 \description{
-Starsim is a fast, flexible disease modeling framework, which runs the same model as a compartmental (ODE), stochastic, or agent-based model. This package makes Starsim available in R.
+An R interface to 'Starsim' \url{https://starsim.org}, a fast, flexible disease modeling framework written in 'Python', which runs the same model as a compartmental (ODE), stochastic, or agent-based model. Models are written and run from R, with results as data frames and plots on R graphics devices.
 }
 \seealso{
 Useful links:
@@ -26,6 +26,11 @@ Authors:
   \item Romesh Abeysuriya \email{romesh.abeysuriya@burnet.edu.au}
   \item Robert Hinch \email{robert.hinch@gmail.com}
   \item Daniel Klein \email{daniel.klein@gatesfoundation.org}
+}
+
+Other contributors:
+\itemize{
+  \item Bill & Melinda Gates Foundation [copyright holder, funder]
 }
 
 }

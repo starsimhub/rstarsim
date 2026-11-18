@@ -29,5 +29,5 @@ reinstall_starsim(package = "git+https://github.com/starsimhub/starsim.git@v4")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{init_starsim}} for the first installation.
+\code{\link{install_starsim}} for the first installation.
 }
