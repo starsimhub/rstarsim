@@ -6,7 +6,7 @@ This is a new submission. R-Starsim is an R interface to Starsim (https://starsi
 
 - Python and the Starsim Python package are declared in SystemRequirements. Nothing is installed or downloaded when the package is installed, loaded, checked, or tested.
 - `install_starsim()` installs Miniconda and Starsim only when the user calls it. In an interactive session it lists what it will install and asks first; `ask = FALSE` skips the question in scripts.
-- Examples run only if Starsim is available (`@examplesIf starsim_available()`), and tests that need it are skipped otherwise. Examples that install software or change the Python environment run only interactively.
+- Examples run only if Starsim is available (`@examplesIf starsim::starsim_available()`), and tests that need it are skipped otherwise. Examples that install software or change the Python environment run only interactively.
 
 ## R CMD check results
 

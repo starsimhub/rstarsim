@@ -9,6 +9,7 @@ reference:
   - starsim-functions
   - states
   - ss
+  - ssl
 - title: Results
   contents:
   - plot.starsim

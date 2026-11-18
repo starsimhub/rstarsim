@@ -24,7 +24,7 @@ Makes a Starsim state for each name, and puts it in scope under that name, as
 \code{S, I, R = ss.states('S I R')} does in Python.
 }
 \examples{
-\dontshow{if (starsim_available()) withAutoprint(\{ # examplesIf}
+\dontshow{if (starsim::starsim_available()) withAutoprint(\{ # examplesIf}
 states("S I R") # Now S, I and R are states
 sir <- Disease(
   infection = Transition(S, I, rate = 0.3 * I),

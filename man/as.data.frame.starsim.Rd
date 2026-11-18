@@ -20,7 +20,7 @@ or a multisim's, one row per time point, result, scenario, and quantile.
 Dates are \code{Date}s.
 }
 \examples{
-\dontshow{if (starsim_available()) withAutoprint(\{ # examplesIf}
+\dontshow{if (starsim::starsim_available()) withAutoprint(\{ # examplesIf}
 sim <- Sim(ss$SIR(), stop = 100)
 sim$run()
 df <- as.data.frame(sim)

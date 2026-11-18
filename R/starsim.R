@@ -11,7 +11,7 @@
 #'
 #' @format A Python module (see \code{reticulate::import()}).
 #' @export
-#' @examplesIf starsim_available()
+#' @examplesIf starsim::starsim_available()
 #' sim <- ss$Sim(ss$SIR(), stop = 100)
 ss <- NULL
 
@@ -23,7 +23,7 @@ ss <- NULL
 #'
 #' @format A Python module (see \code{reticulate::import()}).
 #' @export
-#' @examplesIf starsim_available()
+#' @examplesIf starsim::starsim_available()
 #' sim <- Sim(ssl$Measles(), stop = days(100))
 ssl <- NULL
 

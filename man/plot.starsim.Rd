@@ -22,7 +22,7 @@ A figure made by Starsim or Matplotlib (e.g. by \code{x$plot()}) appears
 when it is printed, as a ggplot does.
 }
 \examples{
-\dontshow{if (starsim_available()) withAutoprint(\{ # examplesIf}
+\dontshow{if (starsim::starsim_available()) withAutoprint(\{ # examplesIf}
 sim <- Sim(ss$SIR(), stop = 100)
 sim$run()
 plot(sim)

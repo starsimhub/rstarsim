@@ -15,7 +15,7 @@ Starsim's library of diseases and networks, as in Python's
 \code{ssl.Measles()} in Python. It is loaded the first time it is used.
 }
 \examples{
-\dontshow{if (starsim_available()) withAutoprint(\{ # examplesIf}
+\dontshow{if (starsim::starsim_available()) withAutoprint(\{ # examplesIf}
 sim <- Sim(ssl$Measles(), stop = days(100))
 \dontshow{\}) # examplesIf}
 }
