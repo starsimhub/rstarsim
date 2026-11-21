@@ -35,6 +35,8 @@ test_that("R values are passed as a Python user would type them", {
   expect_identical(py_args(list(a = NULL))$a, NULL) # NULL is None
 
   expect_s3_class(par(0.3, bounds = c(0.1, 1)), "starsim.internals.expressions.par")
+  expect_equal(reticulate::py_str(peryear(2)), reticulate::py_str(ss$peryear(2L))) # Time and rates are exported
+  expect_equal(reticulate::py_str(by(age = c(0.8, 0.9))), reticulate::py_str(ss$by(age = c(0.8, 0.9)))) # by() is Starsim's ...
 })
 
 test_that("States are put in scope, and replace only states", {
@@ -135,4 +137,5 @@ test_that("Arguments are checked without Python", {
   pdf(NULL)
   on.exit(dev.off())
   expect_type(par("mar"), "double") # Graphical parameters are R's, not Starsim's
+  expect_s3_class(by(warpbreaks[, 1:2], warpbreaks$tension, summary), "by") # ... unless given a function, as base::by() is
 })

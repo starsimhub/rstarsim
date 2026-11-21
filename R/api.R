@@ -58,7 +58,11 @@ with_names <- function(envir, expr) {
 #'
 #' \itemize{
 #'   \item \strong{Models:} \code{Disease}, \code{Transition}, \code{outcome}, and \code{\link{states}}
-#'   \item \strong{Parameters and time:} \code{par} (see below), \code{days}, \code{years}
+#'   \item \strong{Parameters and time:} \code{par} (see below); durations, \code{days},
+#'     \code{weeks}, \code{months}, \code{years}; rates, \code{per}, \code{perday}, \code{perweek},
+#'     \code{permonth}, \code{peryear}; probabilities over a time, \code{probperday},
+#'     \code{probperweek}, \code{probpermonth}, \code{probperyear}; and values by group, \code{by} (see below)
+#'   \item \strong{Demographics:} \code{birth}, \code{death}
 #'   \item \strong{Contacts and interventions:} \code{contacts}, \code{vaccinate}, \code{modify}
 #'   \item \strong{Running:} \code{Sim}, \code{MultiSim}, \code{parallel}
 #' }
@@ -67,6 +71,9 @@ with_names <- function(envir, expr) {
 #' graphical parameters (\code{par(mfrow = c(1, 2))}) or nothing: it is Starsim's when its
 #' first argument is a value (\code{par(0.3, bounds = c(0.1, 1))}) or it is given
 #' one of Starsim's keywords (\code{value}, \code{bounds}, \code{prior}, ...).
+#' Likewise \code{by} is also R's \code{base::by()}, which it calls when it is given
+#' a function (\code{by(df, df$group, summary)}); otherwise it is Starsim's
+#' (\code{by(age = c(0.8, 0.9, 0.95))}).
 #'
 #' @param ... Arguments, as for the same function in Python.
 #'
@@ -119,6 +126,68 @@ days <- ss_function("days")
 #' @rdname starsim-functions
 #' @export
 years <- ss_function("years")
+
+#' @rdname starsim-functions
+#' @export
+weeks <- ss_function("weeks")
+
+#' @rdname starsim-functions
+#' @export
+months <- ss_function("months")
+
+#' @rdname starsim-functions
+#' @export
+per <- ss_function("per")
+
+#' @rdname starsim-functions
+#' @export
+perday <- ss_function("perday")
+
+#' @rdname starsim-functions
+#' @export
+perweek <- ss_function("perweek")
+
+#' @rdname starsim-functions
+#' @export
+permonth <- ss_function("permonth")
+
+#' @rdname starsim-functions
+#' @export
+peryear <- ss_function("peryear")
+
+#' @rdname starsim-functions
+#' @export
+probperday <- ss_function("probperday")
+
+#' @rdname starsim-functions
+#' @export
+probperweek <- ss_function("probperweek")
+
+#' @rdname starsim-functions
+#' @export
+probpermonth <- ss_function("probpermonth")
+
+#' @rdname starsim-functions
+#' @export
+probperyear <- ss_function("probperyear")
+
+#' @rdname starsim-functions
+#' @export
+birth <- ss_function("birth")
+
+#' @rdname starsim-functions
+#' @export
+death <- ss_function("death")
+
+ss_by <- ss_function("by")
+
+#' @rdname starsim-functions
+#' @export
+by <- function(...) {
+  args <- list(...)
+  base_by <- any(c("INDICES", "FUN") %in% names(args)) || any(vapply(args, is.function, logical(1))) # base::by() always takes a function; Starsim's never does
+  if (base_by) base::by(...) else ss_by(...)
+}
 
 #' @rdname starsim-functions
 #' @export

@@ -59,7 +59,7 @@ head(df)
 
 ## Usage
 
-The most commonly used parts of Starsim are R functions: `Sim()`, `Disease()`, `Transition()`, `states()`, `par()`, `outcome()`, `contacts()`, `vaccinate()`, `modify()`, `parallel()`, `days()`, and `years()`. They take the same arguments as in Python, as R values: e.g. `ss.Sim(sir, stop=100)` in Python is `Sim(sir, stop = 100)` in R.
+The most commonly used parts of Starsim are R functions: `Sim()`, `Disease()`, `Transition()`, `states()`, `par()`, `outcome()`, `contacts()`, `vaccinate()`, `modify()`, `parallel()`, `by()`, `birth()`, `death()`, and the durations and rates (`days()`, `weeks()`, `peryear()`, ...). They take the same arguments as in Python, as R values: e.g. `ss.Sim(sir, stop=100)` in Python is `Sim(sir, stop = 100)` in R.
 
 Everything else in Starsim is in `ss`, as `import starsim as ss` gives in Python: e.g. `ss$SIR()`, `ss$Network()`, or `ss$Sim()` (the same as `Sim()`). Methods are called with `$`: `sim.run()` in Python is `sim$run()` in R.
 

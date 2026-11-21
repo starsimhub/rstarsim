@@ -10,6 +10,20 @@
 \alias{outcome}
 \alias{days}
 \alias{years}
+\alias{weeks}
+\alias{months}
+\alias{per}
+\alias{perday}
+\alias{perweek}
+\alias{permonth}
+\alias{peryear}
+\alias{probperday}
+\alias{probperweek}
+\alias{probpermonth}
+\alias{probperyear}
+\alias{birth}
+\alias{death}
+\alias{by}
 \alias{contacts}
 \alias{vaccinate}
 \alias{modify}
@@ -31,6 +45,34 @@ outcome(...)
 days(...)
 
 years(...)
+
+weeks(...)
+
+months(...)
+
+per(...)
+
+perday(...)
+
+perweek(...)
+
+permonth(...)
+
+peryear(...)
+
+probperday(...)
+
+probperweek(...)
+
+probpermonth(...)
+
+probperyear(...)
+
+birth(...)
+
+death(...)
+
+by(...)
 
 contacts(...)
 
@@ -62,7 +104,11 @@ a variable of your own is called \code{Sim}.
 
 \itemize{
 \item \strong{Models:} \code{Disease}, \code{Transition}, \code{outcome}, and \code{\link{states}}
-\item \strong{Parameters and time:} \code{par} (see below), \code{days}, \code{years}
+\item \strong{Parameters and time:} \code{par} (see below); durations, \code{days},
+\code{weeks}, \code{months}, \code{years}; rates, \code{per}, \code{perday}, \code{perweek},
+\code{permonth}, \code{peryear}; probabilities over a time, \code{probperday},
+\code{probperweek}, \code{probpermonth}, \code{probperyear}; and values by group, \code{by} (see below)
+\item \strong{Demographics:} \code{birth}, \code{death}
 \item \strong{Contacts and interventions:} \code{contacts}, \code{vaccinate}, \code{modify}
 \item \strong{Running:} \code{Sim}, \code{MultiSim}, \code{parallel}
 }
@@ -71,6 +117,9 @@ a variable of your own is called \code{Sim}.
 graphical parameters (\code{par(mfrow = c(1, 2))}) or nothing: it is Starsim's when its
 first argument is a value (\code{par(0.3, bounds = c(0.1, 1))}) or it is given
 one of Starsim's keywords (\code{value}, \code{bounds}, \code{prior}, ...).
+Likewise \code{by} is also R's \code{base::by()}, which it calls when it is given
+a function (\code{by(df, df$group, summary)}); otherwise it is Starsim's
+(\code{by(age = c(0.8, 0.9, 0.95))}).
 }
 \examples{
 \dontshow{if (starsim::starsim_available()) withAutoprint(\{ # examplesIf}
