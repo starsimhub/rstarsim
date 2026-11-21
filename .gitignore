@@ -57,3 +57,7 @@ rsconnect/
 .quarto
 docs
 !vignettes/*.png
+
+# Python bytecode, from the helpers in inst/python
+__pycache__/
+*.pyc

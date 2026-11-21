@@ -139,3 +139,41 @@ test_that("Arguments are checked without Python", {
   expect_type(par("mar"), "double") # Graphical parameters are R's, not Starsim's
   expect_s3_class(by(warpbreaks[, 1:2], warpbreaks$tension, summary), "by") # ... unless given a function, as base::by() is
 })
+
+test_that("Sims that call an R function run one after another, rather than hang", {
+  skip_if_no_starsim()
+  states("S I R")
+  mortality <- function(sim) perday(0.01) # Converted with its argument, which Starsim reads
+  sir <- Disease(
+    infection = Transition(S, I, rate = 0.3 * I),
+    recovery  = Transition(I, R, dur = days(10)),
+    death     = Transition(I, ss$dead, rate = mortality),
+    init = list(I = 0.01)
+  )
+  expect_true(calls_r(list(Sim(sir))))
+  expect_false(calls_r(list(Sim(ss$SIR()))))
+  expect_message(msim <- parallel(Sim(sir, total_pop = 1000, stop = days(10), verbose = 0), n_runs = 2), "one after another")
+  expect_s3_class(msim, "starsim.run.MultiSim")
+})
+
+test_that("A class of Starsim's can be defined in R", {
+  skip_if_no_starsim()
+  S <- "a variable named like an attribute" # Not used as a key, as reticulate::PyClass() would
+  Growth <- Class("Growth", ss$Module,
+    rate   = par(0.1),
+    wealth = ss$FloatArr(default = 1),
+    S      = 2,
+    n      = 3, # Not taken as name, as R's partial matching would
+    step = function(self, extra = 1) { # A default, left to R
+      rich <- (self$wealth > 1.2)$uids # UIDs, kept as Starsim's
+      self$wealth[] <- self$wealth * (1 + self$pars$rate * extra)
+      self$wealth[rich] <- 1.2
+    }
+  )
+  expect_equal(reticulate::py_to_r(Growth$S), 2)
+  expect_equal(reticulate::py_to_r(Growth$n), 3)
+  sim <- Sim(Growth(), n_agents = 10, stop = 3, verbose = 0) # Steps 0 to 3: 1.1, 1.21, then capped at 1.2, then 1.32
+  sim$run()
+  expect_equal(as.vector(reticulate::py_to_r(sim$people$growth$wealth$values)), rep(1.32, 10), tolerance = 1e-6) # Stored as float32
+  expect_error(Class("Bad", ss$Module, function(self) NULL), "by name")
+})

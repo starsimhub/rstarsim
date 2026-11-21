@@ -167,7 +167,11 @@ dollar_starsim <- function(x, name) {
   }
   function(...) {
     envir <- parent.frame()
-    out <- with_names(envir, do.call(fn, py_args(list(...))))
+    args <- list(...)
+    if (name == "run" && inherits(x, "starsim.run.MultiSim") && is.null(args$workers) && calls_r(x)) { # As parallel() does
+      args$workers <- 1L
+    }
+    out <- with_names(envir, do.call(fn, py_args(args)))
     if (reticulate::py_id(out) == reticulate::py_id(x)) { # The object itself, changed (e.g. disease$stratify()), so not printed again
       return(invisible(x))
     }

@@ -1,10 +1,13 @@
 # The commonly used parts of Starsim, as R functions that take R arguments
 
-# R values as a Python user would type them: whole numbers as integers (2, not 2.0), and named lists with
-# numbers for names as dicts with numbers for keys (list("0" = 0.3) as {0: 0.3}); anything else as reticulate converts it
+# R values as a Python user would type them: whole numbers as integers (2, not 2.0), named lists with numbers for names as
+# dicts with numbers for keys (list("0" = 0.3) as {0: 0.3}), and functions with their arguments; anything else as reticulate converts it
 py_args <- function(x) {
   if (inherits(x, "python.builtin.object") || is.data.frame(x)) {
     return(x)
+  }
+  if (is.function(x)) { # As a Python function with the same arguments, which Starsim reads (e.g. sim, or sim and uids)
+    return(reticulate::py_func(x))
   }
   if (is.list(x)) {
     keys <- names(x)
@@ -103,9 +106,31 @@ Sim <- ss_function("Sim")
 #' @export
 MultiSim <- ss_function("MultiSim")
 
+ss_parallel <- ss_function("parallel")
+
 #' @rdname starsim-functions
 #' @export
-parallel <- ss_function("parallel")
+parallel <- function(...) {
+  args <- list(...)
+  if (is.null(args$workers) && calls_r(args)) {
+    args$workers <- 1L
+  }
+  do.call(ss_parallel, args, envir = parent.frame()) # Called from the caller's frame, so what it makes is named after the caller's variables
+}
+
+# Whether running these needs this R session: true if they hold an R function, which Starsim's worker processes can't call
+# (they would wait for it for ever). They are then run one after another here (workers = 1), with a message saying why
+calls_r <- function(x) {
+  if (is.null(r_finder$calls_r)) {
+    r_finder$calls_r <- reticulate::import_from_path("calls_r", system.file("python", package = "starsim"))$calls_r
+  }
+  found <- isTRUE(tryCatch(r_finder$calls_r(py_args(x)), error = function(e) FALSE))
+  if (found) {
+    message("Running one after another in this R session (workers = 1), since the sims call an R function, which Starsim's worker processes can't")
+  }
+  found
+}
+r_finder <- new.env()
 
 #' @rdname starsim-functions
 #' @export
@@ -258,4 +283,101 @@ states <- function(names, ..., envir = parent.frame()) {
 
 is_state <- function(x) {
   inherits(x, "starsim.internals.transitions.State")
+}
+
+#' Define a class of Starsim's in R
+#'
+#' Makes a Python class from R, as \code{class Wealth(ss.Module):} does in Python:
+#' a module, disease, intervention, analyzer, connector, or network written as code,
+#' with its parameters, states and methods. Methods are R functions whose first
+#' argument is the object (\code{self}); they are given their arguments as Starsim's
+#' objects, so what they compute stays Starsim's, as in Python (e.g. UIDs stay UIDs),
+#' and \code{reticulate::py_to_r()} gives an R value. Starsim's arrays and results
+#' are indexed and assigned to with \code{[} and \code{[<-} as in Python: an array by
+#' UIDs or a mask, a result by the step (\code{self$ti}, which counts from 0, as Python
+#' does); \code{x[]} is the whole of either. A method of the class it inherits from
+#' is called as \code{ss$Module$init_results(self)} (Python's \code{super()}).
+#'
+#' Starsim's worker processes can't run R, so sims with a class defined in R are run
+#' one after another in this R session by \code{parallel()}.
+#'
+#' @param ... First, the name of the class (a string), and the class it inherits
+#'   from, e.g. \code{ss$Module} or \code{ss$Disease} (or a list of them), unnamed or
+#'   as \code{name =} and \code{inherit =}; then its attributes and methods, by name:
+#'   parameters (\code{par()}), states (e.g. \code{ss$FloatArr()}), other values, and
+#'   methods (R functions).
+#'
+#' @return The class, a Python class: call it to make a module (\code{Wealth()}).
+#'
+#' @seealso \code{\link{starsim-functions}}
+#'
+#' @export
+#' @examplesIf starsim::starsim_available()
+#' Wealth <- Class("Wealth", ss$Module,
+#'   wealth = ss$FloatArr(default = 1),
+#'   step = function(self) {
+#'     self$wealth[] <- self$wealth * 1.01 # Everyone's wealth grows by 1% a step
+#'   }
+#' )
+#' sim <- Sim(Wealth(), n_agents = 100, stop = 10)
+#' sim$run()
+Class <- function(...) { # Arguments read here, so that an attribute such as n isn't taken as name, as R would partially match it
+  defs <- list(...)
+  keys <- if (is.null(names(defs))) rep("", length(defs)) else names(defs)
+  take <- function(key, pos) { # name and inherit: by that name exactly, or else the first unnamed arguments
+    i <- if (key %in% keys) match(key, keys) else which(!nzchar(keys))[pos]
+    if (is.na(i)) stop("Class() takes the name of the class and the class it inherits from, e.g. Class(\"Wealth\", ss$Module, ...)")
+    val <- defs[[i]]
+    defs[[i]] <<- NULL
+    keys <<- keys[-i]
+    val
+  }
+  name <- take("name", 1)
+  inherit <- take("inherit", 1)
+  if (length(defs) && any(!nzchar(keys))) {
+    stop("Class() takes the attributes and methods of the class by name, e.g. step = function(self) {...}")
+  }
+  names(defs) <- keys
+  defs <- lapply(defs, function(x) if (is.function(x)) r_method(x) else py_args(x))
+  defs <- c(list(`__module__` = "__main__", `__qualname__` = name), defs)
+  bases <- if (is.list(inherit)) do.call(reticulate::tuple, inherit) else reticulate::tuple(inherit)
+  reticulate::import_builtins()$type(name, bases, reticulate::py_dict(names(defs), unname(defs))) # String keys, which reticulate::PyClass() doesn't give for names that are also variables
+}
+
+# An R function as a Python method: with its arguments, which it is given unconverted (see Class())
+r_method <- function(f) {
+  if (is.null(rclass$method)) {
+    rclass$method <- reticulate::import_from_path("rclass", system.file("python", package = "starsim"))$method
+  }
+  args <- formals(f)
+  dots <- "..." %in% names(args)
+  args <- args[names(args) != "..."]
+  has_default <- vapply(args, function(a) !identical(a, quote(expr = )), logical(1))
+  rclass$method(reticulate::r_to_py(f, convert = FALSE), as.list(names(args)[!has_default]), as.list(names(args)[has_default]), dots)
+}
+rclass <- new.env()
+
+#' @rawNamespace S3method("[", starsim.internals.arrays.BaseArr, item_arr)
+#' @rawNamespace S3method("[<-", starsim.internals.arrays.BaseArr, set_item_arr)
+#' @noRd
+item_arr <- function(x, i) {
+  reticulate::py_get_item(x, arr_index(x, i))
+}
+
+set_item_arr <- function(x, i, value) {
+  reticulate::py_set_item(x, arr_index(x, i), value)
+  x
+}
+
+# An index of a Starsim array as Python takes it: all of it if none is given (x[], as x[:] in Python); whole numbers into
+# the arrays of people as UIDs, which is what Starsim means by them (R has them as numbers, e.g. from (x > 0)$uids); and
+# anything else (a mask, a step of a result) as it is
+arr_index <- function(x, i) {
+  if (missing(i)) {
+    return(reticulate::import_builtins()$slice(NULL))
+  }
+  if (is.numeric(i) && inherits(x, "starsim.internals.arrays.Arr")) {
+    return(ss$uids(as.integer(i)))
+  }
+  py_args(i)
 }
